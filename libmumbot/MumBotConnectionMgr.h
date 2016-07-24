@@ -1,0 +1,60 @@
+#pragma once
+#include <thread>
+#include <string>
+#include <gnutls/gnutls.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <string>
+#include "MumBotEventListener.h"
+#include "mumbotstate.h"
+
+namespace libmumbot {
+	class MumBotConnectionMgr {
+	public:
+		void setListener(MumBotEventListener *listener);
+		void setStateObject(MumBotState *state);
+	    void startClient(std::string host, std::string port);
+	private:
+	    static const short PKT_TYPE_VERSION = 0;
+	    static const short PKT_TYPE_AUTH = 2;
+	    static const short PKT_TYPE_PING = 3;
+	    static const short PKT_TYPE_REJECT = 4;
+	    static const short PKT_TYPE_SERVERSYNC = 5;
+	    static const short PKT_TYPE_CHANNELREMOVE = 6;
+	    static const short PKT_TYPE_CHANNELSTATE = 7;
+	    static const short PKT_TYPE_USERREMOVE = 8;
+	    static const short PKT_TYPE_USERSTATE = 9;
+	    static const short PKT_TYPE_TEXTMESSAGE = 11;
+	    static const short PKT_TYPE_PERMISSIONDENIED = 12;
+
+
+
+	    uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len
+	    uint8_t c_headerpos_ = 0;
+	    uint32_t c_datapos_ = 0;
+	    uint8_t *c_data_;
+
+	    fd_set socketSet_;
+		libmumbot::MumBotEventListener *eventListener_ = NULL;
+		libmumbot::MumBotState *mumState_ = NULL;
+
+	    gnutls_session_t gnutls_session_;
+	    int mumCmd_socketFD_ = -1;
+	    int mum_maxSocketFD_ = 0;
+	    std::mutex mutex_;
+	    std::thread clientLoopThread_;
+	    std::thread clientKeepAliveThread_;
+	    void clientLoop();
+	    void clientKeepAlive();
+	    void sendData(short pktType, std::string data);
+	    bool processInboundPkt();
+
+	    std::string createVersionPktData();
+	    std::string createAuthPktData(std::string username);
+	    std::string createPingPktData();
+	    std::string createDeafMutePktData();
+	};
+}
