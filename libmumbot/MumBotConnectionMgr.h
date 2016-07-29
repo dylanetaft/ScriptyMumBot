@@ -30,7 +30,7 @@ namespace libmumbot {
 	    static const short PKT_TYPE_USERSTATE = 9;
 	    static const short PKT_TYPE_TEXTMESSAGE = 11;
 	    static const short PKT_TYPE_PERMISSIONDENIED = 12;
-
+		static const short PKT_TYPE_CODECVERSION = 21;
 
 		static const short APKT_TYPE_CELT = 0b00000000;
 		static const short APKT_TYPE_PING = 0b00100000;

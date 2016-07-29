@@ -33,6 +33,7 @@ void ScriptyMumBot::recvUDPTunnel (std::string msg) {
     uint8_t apkt_target = msg[0] & 0b00011111;
     uint32_t pos = 1;
     std::cout << "apkt_type:" << (int)apkt_type << " apkt_target:" << (int)apkt_target << "\n";
+    std::cout << "pos 0:" << (int)msg[0];
     std::cout << "apkt_pos:" << pos << "\n";
     uint64_t apkt_session_id = readNextVint(msg,pos,&pos);
     uint64_t apkt_seq_num = readNextVint(msg,pos,&pos);

@@ -146,15 +146,17 @@ namespace libmumbot {
 	}
 	std::string MumBotConnectionMgr::createVersionPktData() {
 	  MumbleProto::Version version;
-	  version.set_version(66048);
-	  version.set_release("1.2.4");
+	  version.set_version(65536 + 768 + 0);
+	  version.set_release("1.3.0");
 	  version.set_os("FAKE OS");
 	  return version.SerializeAsString();
 	}
 
+
 	std::string MumBotConnectionMgr::createAuthPktData(std::string username) {
 	  MumbleProto::Authenticate auth;
 	  auth.set_username(username.c_str());
+	  auth.set_opus(1);
 	  return auth.SerializeAsString();
 	}
 
@@ -206,6 +208,7 @@ namespace libmumbot {
 
 	  sendData(PKT_TYPE_VERSION,createVersionPktData());
 	  sendData(PKT_TYPE_AUTH,createAuthPktData("CPPBOT"));
+
 	  //sendData(PKT_TYPE_USERSTATE,createDeafMutePktData());
 
 
