@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 void ScriptyMumBot::onConnect() {}
 void ScriptyMumBot::recvACL(MumbleProto::ACL msg) {}
 void ScriptyMumBot::recvChanACL(MumbleProto::ACL_ChanACL) {}
@@ -27,9 +28,12 @@ void ScriptyMumBot::recvSuggestConfig (MumbleProto::SuggestConfig msg) {}
 void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
 void ScriptyMumBot::recvUDPTunnel (std::string msg) {
     std::cout << "TCP TUNNEL\n";
+    std::cout << msg.length() << "\n";
     uint8_t apkt_type = msg[0] & 0b11100000;
     uint8_t apkt_target = msg[0] & 0b00011111;
     uint32_t pos = 1;
+    std::cout << "apkt_type:" << (int)apkt_type << " apkt_target:" << (int)apkt_target << "\n";
+    std::cout << "apkt_pos:" << pos << "\n";
     uint64_t apkt_session_id = readNextVint(msg,pos,&pos);
     uint64_t apkt_seq_num = readNextVint(msg,pos,&pos);
 
@@ -123,6 +127,7 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
 }
 
 int main() {
+
   ScriptyMumBot bot;
   libmumbot::MumBotState state;
   libmumbot::MumBotConnectionMgr mgr;

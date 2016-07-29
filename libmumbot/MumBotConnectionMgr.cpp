@@ -74,7 +74,7 @@ namespace libmumbot {
 	      c_datapos_ += bytesr;
 	      if (c_datapos_ == pktlen) { //finished reading packet
 
-	        std::string packet = (char *) c_data_;
+	        std::string packet = std::string((char *) c_data_,pktlen);
 	        free(c_data_);
 	        c_headerpos_ = 0; //reset so we read header next
 	        c_datapos_ = 0;
