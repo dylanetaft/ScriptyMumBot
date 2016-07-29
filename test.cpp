@@ -25,7 +25,19 @@ void ScriptyMumBot::recvServerConfig (MumbleProto::ServerConfig msg) {}
 void ScriptyMumBot::recvServerSync (MumbleProto::ServerSync msg) {}
 void ScriptyMumBot::recvSuggestConfig (MumbleProto::SuggestConfig msg) {}
 void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
-void ScriptyMumBot::recvUDPTunnel (MumbleProto::UDPTunnel msg) {}
+void ScriptyMumBot::recvUDPTunnel (std::string msg) {
+    std::cout << "TCP TUNNEL\n";
+    uint8_t apkt_type = msg[0] & 0b11100000;
+    uint8_t apkt_target = msg[0] & 0b00011111;
+    uint32_t pos = 1;
+    uint64_t apkt_session_id = readNextVint(msg,pos,&pos);
+    uint64_t apkt_seq_num = readNextVint(msg,pos,&pos);
+
+    if (apkt_type == 0b10000000) { //opus
+        std::cout << "OPUS\n";
+    }
+
+}
 void ScriptyMumBot::recvUserList (MumbleProto::UserList msg) {}
 void ScriptyMumBot::recvUserlistUser (MumbleProto::UserList_User msg) {}
 void ScriptyMumBot::recvUserRemove (MumbleProto::UserRemove msg) {}
@@ -38,11 +50,84 @@ void ScriptyMumBot::recvVersion (MumbleProto::Version msg) {
 void ScriptyMumBot::recvVoiceTarget (MumbleProto::VoiceTarget msg) {}
 void ScriptyMumBot::recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg) {}
 
+uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
+    //todo deal with endianness
+    if (pos > data.length()) {
+        std::cout << "Error reading varint\n";
+        return -1;
+    }
+
+    uint8_t vint_type = data[pos];
+    uint64_t vint = 0;
+    if (vint_type >= 0b11111100) { //byte inverted negative two bit number
+        //todo
+    }
+    else if (vint_type >= 0b11111000) { //negative recursive varint
+        //todo
+    }
+    else if (vint_type >= 0b11110100) { //64 bit positive number
+        uint8_t d[8];
+        d[0] = data[pos + 1];
+        d[1] = data[pos + 2];
+        d[2] = data[pos + 3];
+        d[3] = data[pos + 4];
+        d[4] = data[pos + 5];
+        d[5] = data[pos + 6];
+        d[6] = data[pos + 7];
+        d[7] = data[pos + 8];
+        memcpy(&vint,d,8);
+        finishpos = pos + 9;
+    }
+    else if (vint_type >= 0b11110000) { //32 bit positive number
+        int d[4];
+        d[0] = data[pos + 1];
+        d[1] = data[pos + 2];
+        d[2] = data[pos + 3];
+        d[3] = data[pos + 4];
+        memcpy(&vint,d,4); //ok for big endian
+        finishpos = pos + 5;
+    }
+    else if (vint_type >= 0b11100000) { //28 bit positive number
+        int d[4];
+        d[0] = (data[pos] & 0b00001111); //mask off taken bits
+        d[1] = data[pos + 1];
+        d[2] = data[pos + 2];
+        d[3] = data[pos + 3];
+        memcpy(&vint,d,4); //ok for big endian
+        finishpos = pos + 5;
+    }
+    else if (vint_type >= 0b11000000) { //21 bit positive number
+        int d[3];
+        d[0] = (data[pos] & 0b00011111); //mask off taken bits
+        d[1] = data[pos + 1];
+        d[2] = data[pos + 2];
+        memcpy(&vint,d,3); //ok for big endian
+        finishpos = pos + 4;
+    }
+    else if (vint_type >= 0b10000000) { //14 bit positive number
+        int d[2];
+        d[0] = (data[pos] & 0b00111111); //mask off taken bits
+        d[1] = data[pos + 1];
+        memcpy(&vint,d,2); //ok for big endian
+        finishpos = pos + 3;
+    }
+    else { //7 bit positive number
+        int d[1];
+        d[0] = (data[pos] & 0b01111111); //mask off taken bits
+        memcpy(&vint,d,1); //ok for big endian
+        finishpos = pos + 1;
+    }
+
+    return vint;
+
+}
 
 int main() {
   ScriptyMumBot bot;
+  libmumbot::MumBotState state;
   libmumbot::MumBotConnectionMgr mgr;
   mgr.setListener(&bot);
+  mgr.setStateObject(&state);
   mgr.startClient("cookwithkevin.com","64738");
   //ShutdownSSL();
 

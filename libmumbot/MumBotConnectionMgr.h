@@ -19,6 +19,7 @@ namespace libmumbot {
 	    void startClient(std::string host, std::string port);
 	private:
 	    static const short PKT_TYPE_VERSION = 0;
+		static const short PKT_TYPE_UDPTUNNEL = 1;
 	    static const short PKT_TYPE_AUTH = 2;
 	    static const short PKT_TYPE_PING = 3;
 	    static const short PKT_TYPE_REJECT = 4;
@@ -30,6 +31,12 @@ namespace libmumbot {
 	    static const short PKT_TYPE_TEXTMESSAGE = 11;
 	    static const short PKT_TYPE_PERMISSIONDENIED = 12;
 
+
+		static const short APKT_TYPE_CELT = 0b00000000;
+		static const short APKT_TYPE_PING = 0b00100000;
+		static const short APKT_TYPE_SPEEX = 0b01000000;
+		static const short APKT_TYPE_CELT_BETA = 0b01100000;
+		static const short APKT_TYPE_OPUS = 0b10000000;
 
 
 	    uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len
@@ -56,5 +63,6 @@ namespace libmumbot {
 	    std::string createAuthPktData(std::string username);
 	    std::string createPingPktData();
 	    std::string createDeafMutePktData();
+		std::string createVoicePktData();
 	};
 }

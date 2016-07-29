@@ -26,7 +26,7 @@ class ScriptyMumBot : public libmumbot::MumBotEventListener {
 		void recvServerSync (MumbleProto::ServerSync msg);
 		void recvSuggestConfig (MumbleProto::SuggestConfig msg);
 		void recvTextMessage (MumbleProto::TextMessage msg);
-		void recvUDPTunnel (MumbleProto::UDPTunnel msg);
+		void recvUDPTunnel (std::string msg);
 		void recvUserList (MumbleProto::UserList msg);
 		void recvUserlistUser (MumbleProto::UserList_User msg);
 		void recvUserRemove (MumbleProto::UserRemove msg);

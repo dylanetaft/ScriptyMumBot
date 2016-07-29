@@ -1,5 +1,7 @@
 #pragma once
 #include "proto/Mumble.pb.h"
+#include <string>
+
 namespace libmumbot {
     class MumBotEventListener {
       public:
@@ -26,7 +28,7 @@ namespace libmumbot {
         virtual void recvServerSync (MumbleProto::ServerSync msg) = 0;
         virtual void recvSuggestConfig (MumbleProto::SuggestConfig msg) = 0;
         virtual void recvTextMessage (MumbleProto::TextMessage msg) = 0;
-        virtual void recvUDPTunnel (MumbleProto::UDPTunnel msg) = 0;
+        virtual void recvUDPTunnel (std::string msg) = 0;
         virtual void recvUserList (MumbleProto::UserList msg) = 0;
         virtual void recvUserlistUser (MumbleProto::UserList_User msg) = 0;
         virtual void recvUserRemove (MumbleProto::UserRemove msg) = 0;

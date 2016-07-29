@@ -94,6 +94,10 @@ namespace libmumbot {
   				if (eventListener_ != NULL) eventListener_->recvUserState(msg);
   	            break;
 			  }
+			  case PKT_TYPE_UDPTUNNEL: {
+				  if (eventListener_ != NULL) eventListener_->recvUDPTunnel(packet);
+				  break;
+			  }
 	          case PKT_TYPE_SERVERSYNC: {
 	            std::cout << "Server sync packet\n";
 	            break;
@@ -136,6 +140,10 @@ namespace libmumbot {
 	  return ping.SerializeAsString();
 	}
 
+	std::string createVoicePktData() {
+		uint8_t header = 0b10000000; //opus, normal talking
+		return "";
+	}
 	std::string MumBotConnectionMgr::createVersionPktData() {
 	  MumbleProto::Version version;
 	  version.set_version(66048);
@@ -198,7 +206,7 @@ namespace libmumbot {
 
 	  sendData(PKT_TYPE_VERSION,createVersionPktData());
 	  sendData(PKT_TYPE_AUTH,createAuthPktData("CPPBOT"));
-	  sendData(PKT_TYPE_USERSTATE,createDeafMutePktData());
+	  //sendData(PKT_TYPE_USERSTATE,createDeafMutePktData());
 
 
 	  clientLoopThread_ = std::thread(&MumBotConnectionMgr::clientLoop,this);
