@@ -76,7 +76,7 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
         d[6] = data[pos + 7];
         d[7] = data[pos + 8];
         memcpy(&vint,d,8);
-        finishpos = pos + 9;
+        *finishpos = pos + 9;
     }
     else if (vint_type >= 0b11110000) { //32 bit positive number
         int d[4];
@@ -85,7 +85,7 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
         d[2] = data[pos + 3];
         d[3] = data[pos + 4];
         memcpy(&vint,d,4); //ok for big endian
-        finishpos = pos + 5;
+        *finishpos = pos + 5;
     }
     else if (vint_type >= 0b11100000) { //28 bit positive number
         int d[4];
@@ -94,7 +94,7 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
         d[2] = data[pos + 2];
         d[3] = data[pos + 3];
         memcpy(&vint,d,4); //ok for big endian
-        finishpos = pos + 5;
+        *finishpos = pos + 5;
     }
     else if (vint_type >= 0b11000000) { //21 bit positive number
         int d[3];
@@ -102,20 +102,20 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
         d[1] = data[pos + 1];
         d[2] = data[pos + 2];
         memcpy(&vint,d,3); //ok for big endian
-        finishpos = pos + 4;
+        *finishpos = pos + 4;
     }
     else if (vint_type >= 0b10000000) { //14 bit positive number
         int d[2];
         d[0] = (data[pos] & 0b00111111); //mask off taken bits
         d[1] = data[pos + 1];
         memcpy(&vint,d,2); //ok for big endian
-        finishpos = pos + 3;
+        *finishpos = pos + 3;
     }
     else { //7 bit positive number
         int d[1];
         d[0] = (data[pos] & 0b01111111); //mask off taken bits
         memcpy(&vint,d,1); //ok for big endian
-        finishpos = pos + 1;
+        *finishpos = pos + 1;
     }
 
     return vint;

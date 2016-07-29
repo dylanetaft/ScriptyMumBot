@@ -1,5 +1,7 @@
 #include "libmumbot/libmumbot.h"
 
+uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
+
 
 class ScriptyMumBot : public libmumbot::MumBotEventListener {
 	public:
