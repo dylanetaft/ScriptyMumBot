@@ -57,7 +57,7 @@ namespace libmumbot {
 	    }
 	    //if (gnutls_record_check_pending(gnutls_session_) == 0) return 0;
 
-	    if (c_headerpos_ == 6) {
+	    if (c_headerpos_ == 6) { //todo deal with endian
 	    uint16_t pkttype = c_headerbuffer_[0] << 8 | c_headerbuffer_[1];
 	    uint32_t pktlen = c_headerbuffer_[2] << 24 | c_headerbuffer_[3] << 16 | c_headerbuffer_[4] << 8 | c_headerbuffer_[5];
 	    std::cout << "Pkt type:" << pkttype << " Pkt len:" << pktlen << "\n";

@@ -1,6 +1,9 @@
 #include "test.h"
 #include <iostream>
+#include <map>
+#include <fstream>
 
+std::map <uint32_t,*OpusOggOutputWriter> filemap;
 
 
 void ScriptyMumBot::onConnect() {}
@@ -39,8 +42,17 @@ void ScriptyMumBot::recvUDPTunnel (std::string msg) {
 
     if (apkt_type == 0b10000000) { //opus
 		uint64_t apkt_opus_len = readNextVint(msg,pos,&pos);
-        std::cout << "OPUS len:" << apkt_opus_len << "\n";
-
+        apkt_opus_len = apkt_opus_len & 0b111111111111 ; //max voice packet size is 8192, 14th bit marks end of transmission
+        std::cout << "OPUS len:" << apkt_opus_len << " apkt_session_id:" << apkt_session_id << " apkt_seq_num:" << apkt_seq_num << "\n";
+        if (filemap.count(apkt_session_id) == 0) { //new session
+            std::ofstream *f = new std::ofstream;
+            std::string filename = std::to_string(apkt_session_id) + ".opus";
+            OpusOggOutputWriter *ow = new OpusOggOutputWriter(filename);
+            filemap[apkt_session_id] = ow;
+        }
+        std::ofstream *f = filemap[apkt_session_id];
+        const char *data = msg.c_str();
+        f->write(data + pos,apkt_opus_len);
     }
 
 }
@@ -72,60 +84,60 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
         D(std::cout << "negative recursive varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11110100) { //64 bit positive number
-        uint8_t d[8];
-        d[0] = data[pos + 1];
-        d[1] = data[pos + 2];
-        d[2] = data[pos + 3];
-        d[3] = data[pos + 4];
-        d[4] = data[pos + 5];
-        d[5] = data[pos + 6];
-        d[6] = data[pos + 7];
-        d[7] = data[pos + 8];
-        memcpy(&vint,d,8);
+        uint64_t d[8] = {0,0,0,0,0,0,0,0};
+        d[0] = (uint8_t)data[pos + 1];
+        d[1] = (uint8_t)data[pos + 2];
+        d[2] = (uint8_t)data[pos + 3];
+        d[3] = (uint8_t)data[pos + 4];
+        d[4] = (uint8_t)data[pos + 5];
+        d[5] = (uint8_t)data[pos + 6];
+        d[6] = (uint8_t)data[pos + 7];
+        d[7] = (uint8_t)data[pos + 8];
+        vint = (d[0] << 56) + (d[1] << 48) + (d[2] << 40) + (d[3] << 32) + (d[4] << 24) + (d[5] << 16) + (d[6] << 8) + (d[7]);
         *finishpos = pos + 9;
 		D(std::cout << "64 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11110000) { //32 bit positive number
-        uint8_t d[4];
-        d[0] = data[pos + 1];
-        d[1] = data[pos + 2];
-        d[2] = data[pos + 3];
-        d[3] = data[pos + 4];
-        memcpy(&vint,d,4); //ok for big endian
+        uint64_t d[4] = {0,0,0,0};
+        d[0] = (uint8_t)data[pos + 1];
+        d[1] = (uint8_t)data[pos + 2];
+        d[2] = (uint8_t)data[pos + 3];
+        d[3] = (uint8_t)data[pos + 4];
+        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
         *finishpos = pos + 5;
 		D(std::cout << "32 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11100000) { //28 bit positive number
-        uint8_t d[4];
-        d[0] = (data[pos] & 0b00001111); //mask off taken bits
-        d[1] = data[pos + 1];
-        d[2] = data[pos + 2];
-        d[3] = data[pos + 3];
-        memcpy(&vint,d,4); //ok for big endian
+        uint64_t d[4] = {0,0,0,0};
+        d[0] = ((uint8_t)data[pos] & 0b00001111); //mask off taken bits
+        d[1] = (uint8_t)data[pos + 1];
+        d[2] = (uint8_t)data[pos + 2];
+        d[3] = (uint8_t)data[pos + 3];
+        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
         *finishpos = pos + 4;
 		D(std::cout << "28 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11000000) { //21 bit positive number
-        uint8_t d[3];
-        d[0] = (data[pos] & 0b00011111); //mask off taken bits
-        d[1] = data[pos + 1];
-        d[2] = data[pos + 2];
-        memcpy(&vint,d,3); //ok for big endian
+        uint64_t d[3] = {0,0,0};
+        d[0] = ((uint8_t)data[pos] & 0b00011111); //mask off taken bits
+        d[1] = (uint8_t)data[pos + 1];
+        d[2] = (uint8_t)data[pos + 2];
+        vint = (d[0] << 16) + (d[1] << 8) + (d[2]);
         *finishpos = pos + 3;
 		D(std::cout << "21 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b10000000) { //14 bit positive number
-        uint8_t d[2];
-        d[0] = (data[pos] & 0b00111111); //mask off taken bits
-        d[1] = data[pos + 1];
-        memcpy(&vint,d,2); //ok for big endian
+        uint64_t d[2] = {0,0};
+        d[0] = ((uint8_t)data[pos] & 0b00111111); //mask off taken bits
+        d[1] = (uint8_t)data[pos + 1];
+        vint = (d[0] << 8) + (d[1]);
         *finishpos = pos + 2;
 		D(std::cout << "14 bit varint read: " << vint << "\n");
     }
     else { //7 bit positive number
-        uint8_t d[1];
-        d[0] = (data[pos] & 0b01111111); //mask off taken bits
-        memcpy(&vint,d,1); //ok for big endian
+        uint64_t d[1] = {0};
+        d[0] = ((uint8_t)data[pos] & 0b01111111); //mask off taken bits
+        vint = d[0];
         *finishpos = pos + 1;
 		D(std::cout << "7 bit varint read: " << vint << "\n");
     }
