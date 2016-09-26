@@ -17,7 +17,7 @@ namespace libmumbot {
 	}
 	void MumBotConnectionMgr::sendData(short pktType, std::string data) { //
 	  long len = data.length();
-	  //std::lock_guard<std::mutex> lock(mutex_);
+	  std::lock_guard<std::mutex> lock(mutex_);
 	  uint8_t buffer[2 + 4 + len];
 
 	  uint16_t pktTypeN = htons(pktType);

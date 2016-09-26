@@ -152,6 +152,7 @@ int main() {
   libmumbot::MumBotState state;
   libmumbot::MumBotConnectionMgr mgr;
   mgr.setListener(&bot);
+  //mgr.setAudioInputSource(libmumbot::MumBotAudioInput::INPUTTYPE_FIFO,".\\mpd\\mpd.fifo"); //where the hell should this live?
   mgr.setStateObject(&state);
   mgr.startClient("cookwithkevin.com","64738");
   //ShutdownSSL();
