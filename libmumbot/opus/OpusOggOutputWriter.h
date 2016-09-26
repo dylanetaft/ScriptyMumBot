@@ -16,10 +16,11 @@ namespace libmumbot {
 	private:
 		ogg_stream_state streamState_;
 		std::ofstream fileout_;
-		int seq_;
-		int linktype_;
+		int seq_; //packet sequence #
+		ogg_int64_t granulepos_;
 		ogg_packet *genOpusHead();
 		ogg_packet *genOpusTags();
+		int opus_samples(const unsigned char *packet, int size);
 		void op_free(ogg_packet *op);
 		int flush();
 	};

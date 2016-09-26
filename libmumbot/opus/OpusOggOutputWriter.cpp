@@ -36,27 +36,48 @@ namespace libmumbot {
 
 	//Constructor
 	OpusOggOutputWriter::OpusOggOutputWriter(std::string filename) {
+		seq_ = 0;
+		granulepos_ = 0;
 		ogg_packet *op;
 		fileout_.open(filename,std::ofstream::binary);
 		ogg_stream_init(&streamState_,0);
 		op = genOpusHead();
 		ogg_stream_packetin(&streamState_,op);
+		seq_++; //first packet in ogg stream
 		op_free(op);
 		op = genOpusTags();
 		ogg_stream_packetin(&streamState_,op);
+		seq_++; //second packet in ogg stream
 		op_free(op);
 		flush();
 	}
 
 	void OpusOggOutputWriter::writePacket(uint8_t *data, uint32_t len) {
-		ogg_packet *op = op_from_pkt(data, len);
+		ogg_packet *pkt-> = malloc(sizeof(ogg_packet));
+		pkt->packet = data;
+		pkt->bytes = len;
+		pkt->b_o_s = 0;
+		pkt->e_o_s = 0;
+		seq_++; //should this start from 0 or 1? FIXME
+		granulepos_ += opus_samples(data,len);
+		pkt->packetno = seq_;
+		pkt->granulepos = granulepos_;
+		ogg_stream_packetin(&streamState_,pkt);
+		free(pkt);
+		flush();
+	}
 
+
+	int OpusOggOutputWriter::opus_samples(const unsigned char *packet, int size) {
+		int samples = opus_packet_get_samples_per_frame(packet, 48000);
+		int frames = opus_packet_get_nb_frames(packet, size);
+		return samples * frames;
 	}
 
 	int OpusOggOutputWriter::flush() {
 		ogg_page page;
 		if (!fileout_.is_open()) return -1;
-		while (ogg_stream_flush(&streamState_,&page)) {
+		while (ogg_stream_flush(&streamState_,&page)) { //need a separate write function TODO
 			fileout_.write((const char *)page.header,page.header_len);
 			fileout_.write((const char *)page.body,page.body_len);
 		}

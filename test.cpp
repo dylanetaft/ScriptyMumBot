@@ -45,7 +45,7 @@ void ScriptyMumBot::recvUDPTunnel (std::string msg) {
         apkt_opus_len = apkt_opus_len & 0b111111111111 ; //max voice packet size is 8192, 14th bit marks end of transmission
         std::cout << "OPUS len:" << apkt_opus_len << " apkt_session_id:" << apkt_session_id << " apkt_seq_num:" << apkt_seq_num << "\n";
         if (filemap.count(apkt_session_id) == 0) { //new session
-            std::ofstream *f = new std::ofstream;
+            //std::ofstream *f = new std::ofstream;
             std::string filename = std::to_string(apkt_session_id) + ".opus";
             OpusOggOutputWriter *ow = new OpusOggOutputWriter(filename);
             filemap[apkt_session_id] = ow;
