@@ -3,7 +3,7 @@
 #include <map>
 #include <fstream>
 
-std::map <uint32_t,*OpusOggOutputWriter> filemap;
+std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 
 
 void ScriptyMumBot::onConnect() {}
@@ -47,12 +47,12 @@ void ScriptyMumBot::recvUDPTunnel (std::string msg) {
         if (filemap.count(apkt_session_id) == 0) { //new session
             //std::ofstream *f = new std::ofstream;
             std::string filename = std::to_string(apkt_session_id) + ".opus";
-            OpusOggOutputWriter *ow = new OpusOggOutputWriter(filename);
+            libmumbot::OpusOggOutputWriter *ow = new libmumbot::OpusOggOutputWriter(filename);
             filemap[apkt_session_id] = ow;
         }
-        std::ofstream *f = filemap[apkt_session_id];
+        libmumbot::OpusOggOutputWriter *f = filemap[apkt_session_id];
         const char *data = msg.c_str();
-        f->write(data + pos,apkt_opus_len);
+        f->writePacket((uint8_t *)data + pos,apkt_opus_len);
     }
 
 }

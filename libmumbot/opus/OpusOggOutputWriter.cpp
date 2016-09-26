@@ -53,7 +53,7 @@ namespace libmumbot {
 	}
 
 	void OpusOggOutputWriter::writePacket(uint8_t *data, uint32_t len) {
-		ogg_packet *pkt-> = malloc(sizeof(ogg_packet));
+		ogg_packet *pkt = (ogg_packet *)malloc(sizeof(ogg_packet));
 		pkt->packet = data;
 		pkt->bytes = len;
 		pkt->b_o_s = 0;

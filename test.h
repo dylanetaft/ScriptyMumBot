@@ -1,4 +1,5 @@
 #include "libmumbot/libmumbot.h"
+#include "libmumbot/opus/OpusOggOutputWriter.h"
 
 uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
 
