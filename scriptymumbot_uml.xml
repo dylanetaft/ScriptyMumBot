@@ -1,0 +1,184 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>620</x><y>0</y><w>520</w><h>690</h></coordinates><panel_attributes>libmumbot::MumBotEventListener
+--
+Virtual Methods
+        virtual void onConnect() = 0;
+        virtual void recvACL(MumbleProto::ACL msg) = 0;
+        virtual void recvChanACL(MumbleProto::ACL_ChanACL) = 0;
+        virtual void recvACLChanGroup(MumbleProto::ACL_ChanGroup msg) = 0;
+        virtual void recvAuthenticate(MumbleProto::Authenticate msg) = 0;
+        virtual void recvBanList (MumbleProto::BanList msg) = 0;
+        virtual void recvBanlistBanEntry (MumbleProto::BanList_BanEntry msg) = 0;
+        virtual void recvChannelRemove  (MumbleProto::ChannelRemove msg) = 0;
+        virtual void recvChannelState (MumbleProto::ChannelState msg) = 0;
+        virtual void recvCodecVersion (MumbleProto::CodecVersion msg) = 0;
+        virtual void recvContextAction (MumbleProto::ContextAction msg) = 0;
+        virtual void recvContextActionModify (MumbleProto::ContextActionModify msg) = 0;
+        virtual void recvCryptSetup (MumbleProto::CryptSetup msg) = 0;
+        virtual void recvPermissionDenied (MumbleProto::PermissionDenied msg) = 0;
+        virtual void recvPermissionQuery (MumbleProto::PermissionQuery msg) = 0;
+        virtual void recvPing (MumbleProto::Ping msg) = 0;
+        virtual void recvQueryUsers (MumbleProto::QueryUsers msg) = 0;
+        virtual void recvReject (MumbleProto::Reject msg) = 0;
+        virtual void recvRequestBlob (MumbleProto::RequestBlob msg) = 0;
+        virtual void recvServerConfig (MumbleProto::ServerConfig msg) = 0;
+        virtual void recvServerSync (MumbleProto::ServerSync msg) = 0;
+        virtual void recvSuggestConfig (MumbleProto::SuggestConfig msg) = 0;
+        virtual void recvTextMessage (MumbleProto::TextMessage msg) = 0;
+        virtual void recvUDPTunnel (std::string msg) = 0;
+        virtual void recvUserList (MumbleProto::UserList msg) = 0;
+        virtual void recvUserlistUser (MumbleProto::UserList_User msg) = 0;
+        virtual void recvUserRemove (MumbleProto::UserRemove msg) = 0;
+        virtual void recvUserState (MumbleProto::UserState msg) = 0;
+        virtual void recvUserStats (MumbleProto::UserStats msg) = 0;
+        virtual void recvUserStatsStats (MumbleProto::UserStats_Stats msg) = 0;
+        virtual void recvVersion (MumbleProto::Version msg) = 0;
+        virtual void recvVoiceTarget (MumbleProto::VoiceTarget msg) = 0;
+        virtual void recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg) = 0;
+
+--
+Role
+- Designed to be inherited to implement a new bot</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>700</y><w>100</w><h>140</h></coordinates><panel_attributes>lt=&lt;.
+
+
+&lt;&lt;implements&gt;&gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>620</x><y>820</y><w>360</w><h>200</h></coordinates><panel_attributes>bg=pink
+ScriptyMumBot
+--
+Private Vars
+          libmumbot::MumBotState mumbotState_;
+          libmumbot::OpusOggOutputWriter opusOggWriter;
+          libmumbot::OpusOggOutputWriter audioInputOpusWriter_;
+--
+Public Methods
+          recvUDPTunnel(std::string msg)
+          onWriteData(uint8_t *data, uint32_t len);
+--
+Role
+Implements bot specific functions</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>0</y><w>470</w><h>910</h></coordinates><panel_attributes>libmumbot::MumBotConnectionMgr
+--
+Private Vars
+         static const short PKT_TYPE_VERSION = 0;
+         static const short PKT_TYPE_UDPTUNNEL = 1;
+         static const short PKT_TYPE_AUTH = 2;
+         static const short PKT_TYPE_PING = 3;
+         static const short PKT_TYPE_REJECT = 4;
+         static const short PKT_TYPE_SERVERSYNC = 5;
+         static const short PKT_TYPE_CHANNELREMOVE = 6;
+         static const short PKT_TYPE_CHANNELSTATE = 7;
+         static const short PKT_TYPE_USERREMOVE = 8;
+         static const short PKT_TYPE_USERSTATE = 9;
+         static const short PKT_TYPE_TEXTMESSAGE = 11;
+         static const short PKT_TYPE_PERMISSIONDENIED = 12;
+         static const short PKT_TYPE_CODECVERSION = 21;
+         static const short APKT_TYPE_CELT = 0b00000000;
+         static const short APKT_TYPE_PING = 0b00100000;
+         static const short APKT_TYPE_SPEEX = 0b01000000;
+         static const short APKT_TYPE_CELT_BETA = 0b01100000;
+         static const short APKT_TYPE_OPUS = 0b10000000;
+
+         uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len
+         uint8_t c_headerpos_ = 0;
+         uint32_t c_datapos_ = 0;
+         uint8_t *c_data_;
+
+         fd_set socketSet_;
+         libmumbot::MumBotEventListener *eventListener_ = NULL;
+         libmumbot::MumBotState *mumState_ = NULL;
+
+         gnutls_session_t gnutls_session_;
+         int mumCmd_socketFD_ = -1;
+         int mum_maxSocketFD_ = 0;
+         std::mutex mutex_;
+         std::thread clientLoopThread_;
+         std::thread clientKeepAliveThread_;
+--
+Public Methods
+         void setListener(MumBotEventListener *listener);
+         void setStateObject(MumBotState *state);
+         void startClient(std::string host, std::string port);
+--
+Private Methods
+        std::string createVersionPktData();
+        std::string createAuthPktData(std::string username);
+        std::string createPingPktData();
+        std::string createDeafMutePktData();
+        std::string createVoicePktData();c
+        void clientLoop();
+        void clientKeepAlive();
+        void sendData(short pktType, std::string data);
+        bool processInboundPkt();
+--
+Role
+- Implement TLS connectivity with server. 
+- Implements protocol in regards to Client\Server handshake, maintaining Channel and User states
+- Callback\Observer based design pattern - Calls registered instance of MumBotEventListener</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>414</y><w>190</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>564</y><w>230</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>210;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1020</x><y>790</y><w>390</w><h>290</h></coordinates><panel_attributes>libmumbot::OpusOggOutputWriter
+--
+Private Vars
+         ogg_stream_state streamState_;
+         std::ofstream fileout_;
+         int seq_; //packet sequence #
+         ogg_int64_t granulepos_;
+--
+Public Methods
+          OpusOggOutputWriter(std::string filename);
+          void writePacket(uint8_t *data, uint32_t len);
+--
+Private Methods
+           void le32(unsigned char *p,int v);
+           void le16(unsigned char *p, int v);
+           void be32(unsigned char *p, int v);
+           void be16(unsigned char *p, int v);
+--
+Role
+Writes out data received via recvUDPTunnel to OGG file containing OPUS</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>830</x><y>914</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;.
+&lt;&lt;calls&gt;&gt;</panel_attributes><additional_attributes>220;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>930</y><w>470</w><h>230</h></coordinates><panel_attributes>libmumbot::MumBotState
+--
+Private Vars
+           std::map&lt;uint32_t, MumbleProto::UserState&gt; userStates_;
+           std::map&lt;uint32_t, MumbleProto::ChannelState&gt; channelStates_;
+--
+Public Methods
+            void updateChannelState(MumbleProto::ChannelState msg, bool del = 0);
+            void updateUserState(MumbleProto::UserState msg, bool del = 0);
+--
+Role
+Implements bot specific functions</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>20</x><y>584</y><w>110</w><h>380</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>60;360;10;360;10;10;90;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1020</x><y>1100</y><w>570</w><h>300</h></coordinates><panel_attributes>bg=yellow
+libmumbot::AudioInputOpusWriter (TODO)
+--
+Public vars
+          static const short AUDIO_INPUT_SRC_FIFO = 1;
+          static const short AUDIO_INPUT_SRC_ALSA = 2;
+--
+Private Vars
+          libmumbot:: AudioInputOpusWriterListener *listener_;
+           std::thread readAudioInThread_;
+--
+Public Methods
+          AudioInputPacketWriter(short type, std::string filename,  AudioInputPacketWriterListener *listener);
+--
+Private Methods
+--
+Role
+Creates a new thread to read audio input source, calling callback function onWriteData when Opus data has been 
+encoded and is ready to be written out.</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1150</x><y>550</y><w>300</w><h>140</h></coordinates><panel_attributes>bg=yellow
+libmumbot::AudioInputOpusWriterListener (TODO)
+--
+Virtual Methods
+          void onWriteData(uint8_t *data, uint32_t len);
+--
+Role
+Designed to be inherited to implement something that 
+is writing out OPUS data encoded from a source to
+a socket</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>690</y><w>570</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes><additional_attributes>480;10;480;80;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>890</y><w>450</w><h>240</h></coordinates><panel_attributes>lt=&lt;.
+
+
+
+
+
+
+
+
+
+
+
+&lt;&lt;instanceOf&gt;&gt;</panel_attributes><additional_attributes>430;220;10;220;10;10;60;10</additional_attributes></element></diagram>
