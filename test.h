@@ -1,12 +1,15 @@
+#pragma once
 #include "libmumbot/libmumbot.h"
 #include "libmumbot/opus/OpusOggOutputWriter.h"
+#include "libmumbot/opus/AudioInputOpusWriter.h"
+#include "libmumbot/opus/AudioInputWriterListener.h"
+#include <memory>
 
 uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
 
 
-class ScriptyMumBot : public libmumbot::MumBotEventListener {
+class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::AudioInputWriterListener {
 	public:
-		void onConnect();
 		void recvACL(MumbleProto::ACL msg);
 		void recvChanACL(MumbleProto::ACL_ChanACL);
 		void recvACLChanGroup(MumbleProto::ACL_ChanGroup msg);
@@ -39,4 +42,7 @@ class ScriptyMumBot : public libmumbot::MumBotEventListener {
 		void recvVersion (MumbleProto::Version msg);
 		void recvVoiceTarget (MumbleProto::VoiceTarget msg);
 		void recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg);
+		void onAudioEncodedDataReady(uint8_t *data, uint32_t len);
+	private:
+		std::shared_ptr<libmumbot::AudioInputOpusWriter> opusWriter_;
 };

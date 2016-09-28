@@ -100,6 +100,9 @@ namespace libmumbot {
 			  }
 	          case PKT_TYPE_SERVERSYNC: {
 	            std::cout << "Server sync packet\n";
+				MumbleProto::ServerSync sync;
+				sync.ParseFromString(packet);
+				if (eventListener_ != NULL) eventListener_->recvServerSync(sync);
 	            break;
 	          }
 

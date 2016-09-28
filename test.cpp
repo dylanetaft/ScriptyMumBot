@@ -6,7 +6,8 @@
 std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 
 
-void ScriptyMumBot::onConnect() {}
+
+
 void ScriptyMumBot::recvACL(MumbleProto::ACL msg) {}
 void ScriptyMumBot::recvChanACL(MumbleProto::ACL_ChanACL) {}
 void ScriptyMumBot::recvACLChanGroup(MumbleProto::ACL_ChanGroup msg) {}
@@ -26,9 +27,18 @@ void ScriptyMumBot::recvQueryUsers (MumbleProto::QueryUsers msg) {}
 void ScriptyMumBot::recvReject (MumbleProto::Reject msg) {}
 void ScriptyMumBot::recvRequestBlob (MumbleProto::RequestBlob msg) {}
 void ScriptyMumBot::recvServerConfig (MumbleProto::ServerConfig msg) {}
-void ScriptyMumBot::recvServerSync (MumbleProto::ServerSync msg) {}
+void ScriptyMumBot::recvServerSync (MumbleProto::ServerSync msg) {
+    opusWriter_ = std::make_shared<libmumbot::AudioInputOpusWriter> (libmumbot::AudioInputOpusWriter::AUDIO_INPUT_SRC_FIFO,"./mpd/mpd.fifo",this);
+
+}
 void ScriptyMumBot::recvSuggestConfig (MumbleProto::SuggestConfig msg) {}
 void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
+
+void ScriptyMumBot::onAudioEncodedDataReady(uint8_t *data, uint32_t len) {
+    std::cout << "Audio data recv:" << len << "\n";
+
+}
+
 void ScriptyMumBot::recvUDPTunnel (std::string msg) {
     std::cout << "TCP TUNNEL\n";
     std::cout << msg.length() << "\n";

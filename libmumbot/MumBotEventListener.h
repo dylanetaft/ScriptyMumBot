@@ -5,7 +5,6 @@
 namespace libmumbot {
     class MumBotEventListener {
       public:
-    		virtual void onConnect() = 0;
         virtual void recvACL(MumbleProto::ACL msg) = 0;
         virtual void recvChanACL(MumbleProto::ACL_ChanACL) = 0;
         virtual void recvACLChanGroup(MumbleProto::ACL_ChanGroup msg) = 0;
