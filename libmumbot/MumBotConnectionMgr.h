@@ -14,6 +14,12 @@
 namespace libmumbot {
 	class MumBotConnectionMgr {
 	public:
+		static const short APKT_TYPE_CELT = 0b00000000;
+		static const short APKT_TYPE_PING = 0b00100000;
+		static const short APKT_TYPE_SPEEX = 0b01000000;
+		static const short APKT_TYPE_CELT_BETA = 0b01100000;
+		static const short APKT_TYPE_OPUS = 0b10000000;
+
 		void setListener(MumBotEventListener *listener);
 		void setStateObject(MumBotState *state);
 	    void startClient(std::string host, std::string port);
@@ -32,11 +38,7 @@ namespace libmumbot {
 	    static const short PKT_TYPE_PERMISSIONDENIED = 12;
 		static const short PKT_TYPE_CODECVERSION = 21;
 
-		static const short APKT_TYPE_CELT = 0b00000000;
-		static const short APKT_TYPE_PING = 0b00100000;
-		static const short APKT_TYPE_SPEEX = 0b01000000;
-		static const short APKT_TYPE_CELT_BETA = 0b01100000;
-		static const short APKT_TYPE_OPUS = 0b10000000;
+
 
 
 	    uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len

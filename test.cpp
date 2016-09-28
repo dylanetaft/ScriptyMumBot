@@ -2,6 +2,8 @@
 #include <iostream>
 #include <map>
 #include <fstream>
+//#include <string.h>
+
 
 std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 
@@ -50,7 +52,7 @@ void ScriptyMumBot::recvUDPTunnel (std::string msg) {
     uint64_t apkt_session_id = readNextVint(msg,pos,&pos);
     uint64_t apkt_seq_num = readNextVint(msg,pos,&pos);
 
-    if (apkt_type == 0b10000000) { //opus
+    if (apkt_type == libmumbot::MumBotConnectionMgr::APKT_TYPE_OPUS) { //opus
 		uint64_t apkt_opus_len = readNextVint(msg,pos,&pos);
         apkt_opus_len = apkt_opus_len & 0b111111111111 ; //max voice packet size is 8192, 14th bit marks end of transmission
         std::cout << "OPUS len:" << apkt_opus_len << " apkt_session_id:" << apkt_session_id << " apkt_seq_num:" << apkt_seq_num << "\n";
@@ -78,7 +80,59 @@ void ScriptyMumBot::recvVersion (MumbleProto::Version msg) {
 void ScriptyMumBot::recvVoiceTarget (MumbleProto::VoiceTarget msg) {}
 void ScriptyMumBot::recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg) {}
 
-uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
+
+std::string getVint(uint64_t val) { //TODO deal with endianness
+    std::string retval;
+    uint8_t *tval = (uint8_t *) &val;
+
+    if (val > 0xffffffff) { //over 32 bits, encode as 64
+        uint8_t d[9];
+        d[0] = 0b11110100;
+        std::memcpy(d + 1,&val,8);
+        retval = std::string((char *)d,9);
+    }
+    else if (val > 0xfffffff) { //over 28 bits, encode as 32
+        uint8_t d[5];
+        d[0] = 0b11110000;
+        std::memcpy(d + 1, &val, 4);
+        retval = std::string((char *)d,5);
+    }
+    else if (val > 0x1FFFFF) //over 21 bits, encode as 28
+    {
+        uint8_t d[4];
+        val = val >> 4; //shift over 4 bits
+        d[0] = 0b11100000;
+        d[0] = d[0] + (0b00001111 & tval[0]); //mask off 4 taken upper bits
+        std::memcpy(d + 1, tval + 1, 3);
+        retval = std::string((char *)d,4);
+    }
+    else if (val > 0x3FFF) //over 14 bytes, encode as 21
+    {
+        uint8_t d[3];
+        val = val >> 3; //shift over 3 bits
+        d[0] = 0b11000000;
+        d[0] = d[0] + (0b00011111 & tval[0]); //mask off 3 taken upper bits
+        std::memcpy(d + 1, tval + 1, 2);
+        retval = std::string((char *)d,3);
+    }
+    else if (val > 0x7F) { //over 7 bits, encode as 14
+        uint8_t d[2];
+        val = val >> 2; //shift over 3 bits
+        d[0] = 0b10000000;
+        d[0] = d[0] + (0b00111111 & tval[0]); //mask off 2 taken upper bits
+        std::memcpy(d + 1, tval + 1, 1);
+        retval = std::string((char *)d,2);
+    }
+    else if (val > 0) { //still positive, encode as 7 bit
+        uint8_t d[1];
+        val = val >> 1;
+        d[0] = tval[0];
+        retval = std::string((char *)d,1);
+    }
+    return retval;
+
+}
+uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //TODO deal with endianness
     //todo deal with endianness
     if (pos > data.length()) {
         std::cout << "Error reading varint\n";
@@ -88,10 +142,10 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) {
     uint8_t vint_type = data[pos];
     uint64_t vint = 0;
     if (vint_type >= 0b11111100) { //byte inverted negative two bit number
-        D(std::cout << "byte inverted negative 2 bit varint read: " << vint << "\n");
+        D(std::cout << "byte inverted negative 2 bit varint read: " << vint << "\n"); //TODO
     }
     else if (vint_type >= 0b11111000) { //negative recursive varint
-        D(std::cout << "negative recursive varint read: " << vint << "\n");
+        D(std::cout << "negative recursive varint read: " << vint << "\n"); //TODO
     }
     else if (vint_type >= 0b11110100) { //64 bit positive number
         uint64_t d[8] = {0,0,0,0,0,0,0,0};

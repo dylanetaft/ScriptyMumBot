@@ -11,6 +11,11 @@
 #include "proto/Mumble.pb.h"
 
 namespace libmumbot {
+	const short MumBotConnectionMgr::APKT_TYPE_CELT;
+	const short MumBotConnectionMgr::APKT_TYPE_PING;
+	const short MumBotConnectionMgr::APKT_TYPE_SPEEX;
+	const short MumBotConnectionMgr::APKT_TYPE_CELT_BETA;
+	const short MumBotConnectionMgr::APKT_TYPE_OPUS;
 
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
 		mumState_ = state;

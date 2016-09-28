@@ -4,9 +4,11 @@
 #include "libmumbot/opus/AudioInputOpusWriter.h"
 #include "libmumbot/opus/AudioInputWriterListener.h"
 #include <memory>
+#include <string>
+
 
 uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
-
+std::string getVint(uint64_t val);
 
 class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::AudioInputWriterListener {
 	public:

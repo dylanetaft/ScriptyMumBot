@@ -3,6 +3,9 @@
 namespace libmumbot {
 
 
+	const short AudioInputOpusWriter::AUDIO_INPUT_SRC_FIFO; //backwards!
+
+
 
 	AudioInputOpusWriter::AudioInputOpusWriter(short srctype, std::string param, AudioInputWriterListener *listener) {
 		listener_ = listener;
