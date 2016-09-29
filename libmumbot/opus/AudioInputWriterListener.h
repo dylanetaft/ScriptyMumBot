@@ -4,6 +4,6 @@
 namespace libmumbot {
 	class AudioInputWriterListener {
 	public:
-		virtual void onAudioEncodedDataReady(uint8_t *data, uint32_t len) = 0;
+		virtual void onAudioEncodedDataReady(uint8_t *data, uint16_t len) = 0;
 	};
 }

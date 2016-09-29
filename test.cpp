@@ -40,18 +40,22 @@ void ScriptyMumBot::recvServerSync (MumbleProto::ServerSync msg) {
 void ScriptyMumBot::recvSuggestConfig (MumbleProto::SuggestConfig msg) {}
 void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
 
-void ScriptyMumBot::onAudioEncodedDataReady(uint8_t *data, uint32_t len) {
+void ScriptyMumBot::onAudioEncodedDataReady(uint8_t *data, uint16_t len) {
     std::cout << "Audio data recv:" << len << "\n";
     std::string msg;
 
     uint8_t apkt_header = libmumbot::MumBotConnectionMgr::APKT_TYPE_OPUS;
     apkt_header += 0; //talking to channel, normal talking
     uint32_t apkt_posinfo[3] = {0,0,0};
+
+
+
+    //uint16_t len_and_term = len | 0b1000000000000000;
     msg = msg + (char)apkt_header;
     msg = msg + getVint(audioSequence_);
     msg = msg + getVint(len);
     msg.append((char *)data,len);
-    msg.append(audioSequence_,sizeof(apkt_posinfo));
+    msg.append((char *)apkt_posinfo,sizeof(apkt_posinfo));
     connMgr_.sendUDPTunnelAudioData(msg);
     audioSequence_++;
 }

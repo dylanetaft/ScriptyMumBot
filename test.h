@@ -45,7 +45,7 @@ class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::A
 		void recvVersion (MumbleProto::Version msg);
 		void recvVoiceTarget (MumbleProto::VoiceTarget msg);
 		void recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg);
-		void onAudioEncodedDataReady(uint8_t *data, uint32_t len);
+		void onAudioEncodedDataReady(uint8_t *data, uint16_t len);
 	private:
 		libmumbot::MumBotState mumState_;
 		libmumbot::MumBotConnectionMgr connMgr_;
