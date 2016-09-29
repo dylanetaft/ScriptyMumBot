@@ -80,192 +80,55 @@ void ScriptyMumBot::recvVersion (MumbleProto::Version msg) {
 void ScriptyMumBot::recvVoiceTarget (MumbleProto::VoiceTarget msg) {}
 void ScriptyMumBot::recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg) {}
 
-/*
 std::string getVint(uint64_t val) { //TODO deal with endianness
     std::string retval;
-    uint8_t *tval = (uint8_t *) &val;
-
+	D(std::cout << "Encoding vint:" << val << "\n");
     if (val > 0xffffffff) { //over 32 bits, encode as 64
         uint8_t d[9];
+		uint64_t bsval = __builtin_bswap64(val);
+		uint8_t *tval = (uint8_t *) &bsval;
         d[0] = 0b11110100;
-        std::memcpy(d + 1,&val,8);
+        std::memcpy(d + 1,tval,8);
         retval = std::string((char *)d,9);
     }
     else if (val > 0xfffffff) { //over 28 bits, encode as 32
-        uint8_t d[5];
-        d[0] = 0b11110000;
-        std::memcpy(d + 1, &val, 4);
+		uint8_t d[5];
+		uint64_t bsval = __builtin_bswap64(val);
+		uint8_t *tval = (uint8_t *) &bsval;
+		d[0] = 0b11110000;
+		std::memcpy(d + 1, tval + 4, 4);
         retval = std::string((char *)d,5);
     }
     else if (val > 0x1FFFFF) //over 21 bits, encode as 28
     {
         uint8_t d[4];
-        val = val >> 4; //shift over 4 bits
-        d[0] = 0b11100000;
-        d[0] = d[0] + (0b00001111 & tval[0]); //mask off 4 taken upper bits
-        std::memcpy(d + 1, tval + 1, 3);
+		uint64_t bsval = __builtin_bswap64(val);
+		uint8_t *tval = (uint8_t *) &bsval;
+		std::memcpy(d, tval + 4, 4);
+		d[0] = d[0] | 0b11100000;
         retval = std::string((char *)d,4);
     }
     else if (val > 0x3FFF) //over 14 bytes, encode as 21
     {
-        uint8_t d[3];
-        val = val >> 3; //shift over 3 bits
-        d[0] = 0b11000000;
-        d[0] = d[0] + (0b00011111 & tval[0]); //mask off 3 taken upper bits
-        std::memcpy(d + 1, tval + 1, 2);
-        retval = std::string((char *)d,3);
+
+		uint8_t d[3];
+		uint64_t bsval = __builtin_bswap64(val);
+		uint8_t *tval = (uint8_t *) &bsval;
+		std::memcpy(d, tval + 5, 3);
+		d[0] = d[0] | 0b11000000;
+		retval = std::string((char *)d,3);
     }
     else if (val > 0x7F) { //over 7 bits, encode as 14
-        uint8_t d[2];
-        val = val >> 2; //shift over 3 bits
-        d[0] = 0b10000000;
-        d[0] = d[0] + (0b00111111 & tval[0]); //mask off 2 taken upper bits
-        std::memcpy(d + 1, tval + 1, 1);
-        retval = std::string((char *)d,2);
-    }
-    else if (val > 0) { //still positive, encode as 7 bit
-        uint8_t d[1];
-        val = val >> 1;
-        d[0] = tval[0];
-        retval = std::string((char *)d,1);
-    }
-    return retval;
-
-}
-uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //TODO deal with endianness
-    //todo deal with endianness
-    if (pos > data.length()) {
-        std::cout << "Error reading varint\n";
-        return -1;
-    }
-
-    uint8_t vint_type = data[pos];
-    uint64_t vint = 0;
-    if (vint_type >= 0b11111100) { //byte inverted negative two bit number
-        D(std::cout << "byte inverted negative 2 bit varint read: " << vint << "\n"); //TODO
-    }
-    else if (vint_type >= 0b11111000) { //negative recursive varint
-        D(std::cout << "negative recursive varint read: " << vint << "\n"); //TODO
-    }
-    else if (vint_type >= 0b11110100) { //64 bit positive number
-        uint64_t d[8] = {0,0,0,0,0,0,0,0};
-        d[0] = (uint8_t)data[pos + 1];
-        d[1] = (uint8_t)data[pos + 2];
-        d[2] = (uint8_t)data[pos + 3];
-        d[3] = (uint8_t)data[pos + 4];
-        d[4] = (uint8_t)data[pos + 5];
-        d[5] = (uint8_t)data[pos + 6];
-        d[6] = (uint8_t)data[pos + 7];
-        d[7] = (uint8_t)data[pos + 8];
-        vint = (d[0] << 56) + (d[1] << 48) + (d[2] << 40) + (d[3] << 32) + (d[4] << 24) + (d[5] << 16) + (d[6] << 8) + (d[7]);
-        *finishpos = pos + 9;
-		D(std::cout << "64 bit varint read: " << vint << "\n");
-    }
-    else if (vint_type >= 0b11110000) { //32 bit positive number
-        uint64_t d[4] = {0,0,0,0};
-        d[0] = (uint8_t)data[pos + 1];
-        d[1] = (uint8_t)data[pos + 2];
-        d[2] = (uint8_t)data[pos + 3];
-        d[3] = (uint8_t)data[pos + 4];
-        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
-        *finishpos = pos + 5;
-		D(std::cout << "32 bit varint read: " << vint << "\n");
-    }
-    else if (vint_type >= 0b11100000) { //28 bit positive number
-        uint64_t d[4] = {0,0,0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00001111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        d[2] = (uint8_t)data[pos + 2];
-        d[3] = (uint8_t)data[pos + 3];
-        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
-        *finishpos = pos + 4;
-		D(std::cout << "28 bit varint read: " << vint << "\n");
-    }
-    else if (vint_type >= 0b11000000) { //21 bit positive number
-        uint64_t d[3] = {0,0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00011111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        d[2] = (uint8_t)data[pos + 2];
-        vint = (d[0] << 16) + (d[1] << 8) + (d[2]);
-        *finishpos = pos + 3;
-		D(std::cout << "21 bit varint read: " << vint << "\n");
-    }
-    else if (vint_type >= 0b10000000) { //14 bit positive number
-        uint64_t d[2] = {0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00111111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        vint = (d[0] << 8) + (d[1]);
-        *finishpos = pos + 2;
-		D(std::cout << "14 bit varint read: " << vint << "\n");
-    }
-    else { //7 bit positive number
-        uint64_t d[1] = {0};
-        d[0] = ((uint8_t)data[pos] & 0b01111111); //mask off taken bits
-        vint = d[0];
-        *finishpos = pos + 1;
-		D(std::cout << "7 bit varint read: " << vint << "\n");
-    }
-
-    return vint;
-
-}
-*/
-
-std::string getVint(uint64_t val) { //TODO deal with endianness
-    std::string retval;
-	std::cout << "Encoding vint:" << val << "\n";
-    if (val > 0xffffffff) { //over 32 bits, encode as 64
-        uint8_t d[9];
-        d[0] = 0b11110100;
-        std::memcpy(d + 1,&val,8);
-        retval = std::string((char *)d,9);
-    }
-    else if (val > 0xfffffff) { //over 28 bits, encode as 32
-        uint8_t d[5];
-        d[0] = 0b11110000;
-        std::memcpy(d + 1, &val, 4);
-        retval = std::string((char *)d,5);
-    }
-    else if (val > 0x1FFFFF) //over 21 bits, encode as 28
-    {
-        uint8_t d[4];
-        val = val >> 4; //shift over 4 bits
-		uint8_t *tval = (uint8_t *) &val;
-        d[0] = 0b11100000;
-        d[0] = d[0] + (0b00001111 & tval[0]); //mask off 4 taken upper bits
-        std::memcpy(d + 1, tval + 1, 3);
-        retval = std::string((char *)d,4);
-    }
-    else if (val > 0x3FFF) //over 14 bytes, encode as 21
-    {
-        uint8_t d[3];
-        val = val >> 4; //shift over 3 bits
-		uint8_t *tval = (uint8_t *) &val;
-        d[0] = 0b11000000;
-        d[0] = d[0] + (0b00011111 & tval[2]); //mask off 3 taken upper bits
-		d[1] = tval[1];
-		d[2] = tval[0];
-        std::memcpy(d + 1, tval + 1, 2);
-        retval = std::string((char *)d,3);
-    }
-    else if (val > 0x7F) { //over 7 bits, encode as 14
-        uint8_t d[2];
-        val = val >> 3; //shift over 14 bits
-		uint8_t *tval = (uint8_t *) &val;
-        d[0] = 0b10000000;
-        d[0] = d[0] + (0b00111111 & tval[1]); //mask off 2 taken upper bits
-		d[1] = tval[0];
-		for (int x=0;x<8;x++) {
-			std::cout << x << " " << (int)tval[x] << "\n";
-		}
-		//std::cout << "Val of last byte is " << ((int)tval[1] ) << "\n";
-        //std::memcpy(d + 1, tval + 1, 1);
-        retval = std::string((char *)d,2);
+		uint8_t d[2];
+		uint64_t bsval = __builtin_bswap64(val);
+		uint8_t *tval = (uint8_t *) &bsval;
+		std::memcpy(d, tval + 6, 2);
+		d[0] = d[0] | 0b10000000;
+		retval = std::string((char *)d,2);
     }
     else if (val > 0) { //still positive, encode as 7 bit
 
         uint8_t d[1];
-		val = val >> 1;
 		uint8_t *tval = (uint8_t *) &val;
         d[0] = (0b01111111 & tval[0]);
         retval = std::string((char *)d,1);
@@ -282,6 +145,8 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //
 
     uint8_t vint_type = data[pos];
     uint64_t vint = 0;
+	uint8_t *tval = (uint8_t *) &vint;
+
     if (vint_type >= 0b11111100) { //byte inverted negative two bit number
         D(std::cout << "byte inverted negative 2 bit varint read: " << vint << "\n"); //TODO
     }
@@ -289,56 +154,44 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //
         D(std::cout << "negative recursive varint read: " << vint << "\n"); //TODO
     }
     else if (vint_type >= 0b11110100) { //64 bit positive number
-        uint64_t d[8] = {0,0,0,0,0,0,0,0};
-        d[0] = (uint8_t)data[pos + 1];
-        d[1] = (uint8_t)data[pos + 2];
-        d[2] = (uint8_t)data[pos + 3];
-        d[3] = (uint8_t)data[pos + 4];
-        d[4] = (uint8_t)data[pos + 5];
-        d[5] = (uint8_t)data[pos + 6];
-        d[6] = (uint8_t)data[pos + 7];
-        d[7] = (uint8_t)data[pos + 8];
-        vint = (d[0] << 56) + (d[1] << 48) + (d[2] << 40) + (d[3] << 32) + (d[4] << 24) + (d[5] << 16) + (d[6] << 8) + (d[7]);
+		uint8_t d[8];
+		std::memcpy(tval,&data[pos] + 1,8);
+    	vint = __builtin_bswap64(vint);
+
         *finishpos = pos + 9;
 		D(std::cout << "64 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11110000) { //32 bit positive number
-        uint64_t d[4] = {0,0,0,0};
-        d[0] = (uint8_t)data[pos + 1];
-        d[1] = (uint8_t)data[pos + 2];
-        d[2] = (uint8_t)data[pos + 3];
-        d[3] = (uint8_t)data[pos + 4];
-        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
+		uint8_t d[4];
+		std::memcpy(tval + 4,&data[pos] + 1,4);
+		vint = __builtin_bswap64(vint);
         *finishpos = pos + 5;
 		D(std::cout << "32 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11100000) { //28 bit positive number
-        uint64_t d[4] = {0,0,0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00001111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        d[2] = (uint8_t)data[pos + 2];
-        d[3] = (uint8_t)data[pos + 3];
-        vint = (d[0] << 24) + (d[1] << 16) + (d[2] << 8) + (d[3]);
-		vint = vint << 5;
+		uint8_t d[4];
+		std::memcpy(d,&data[pos],4);
+		d[0] = d[0] & 0b00001111;
+		std::memcpy(tval + 4,d,4);
+		vint = __builtin_bswap64(vint);
         *finishpos = pos + 4;
 		D(std::cout << "28 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11000000) { //21 bit positive number
-        uint64_t d[3] = {0,0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00011111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        d[2] = (uint8_t)data[pos + 2];
-        vint = (d[0] << 16) + (d[1] << 8) + (d[2]);
-		vint = vint << 4;
+		uint8_t d[3];
+		std::memcpy(d,&data[pos],3);
+		d[0] = d[0] & 0b00011111;
+		std::memcpy(tval + 5,d,3);
+		vint = __builtin_bswap64(vint);
         *finishpos = pos + 3;
 		D(std::cout << "21 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b10000000) { //14 bit positive number
-        uint64_t d[2] = {0,0};
-        d[0] = ((uint8_t)data[pos] & 0b00111111); //mask off taken bits
-        d[1] = (uint8_t)data[pos + 1];
-        vint = (d[0] << 8) + (d[1]);
-		vint = vint << 3;
+		uint8_t d[2];
+		std::memcpy(d,&data[pos],2);
+		d[0] = d[0] & 0b00111111;
+		std::memcpy(tval + 6,d,2);
+		vint = __builtin_bswap64(vint);
         *finishpos = pos + 2;
 		D(std::cout << "14 bit varint read: " << vint << "\n");
     }
