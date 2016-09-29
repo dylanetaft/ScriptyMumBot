@@ -3,6 +3,8 @@
 #include "MumBotEventListener.h"
 #include "MumBotConnectionMgr.h"
 #include <string>
+#include <iostream>
+
 
 #define DEBUG
 
