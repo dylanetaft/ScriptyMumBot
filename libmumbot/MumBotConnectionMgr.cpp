@@ -202,7 +202,7 @@ namespace libmumbot {
 	  hints.ai_family = AF_UNSPEC;
 	  hints.ai_socktype = SOCK_STREAM;
 	  getaddrinfo(host.c_str(),port.c_str(),&hints, &res);
-	  mumCmd_socketFD_  = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+	  mumCmd_socketFD_  = socket(res->ai_family, res->ai_socktype, res->ai_protocol); //TODO disable Nagle's algorithm??
 	  connect(mumCmd_socketFD_,res->ai_addr,res->ai_addrlen);
 	  FD_SET(mumCmd_socketFD_, &socketSet_);
 	  mum_maxSocketFD_ = mumCmd_socketFD_;

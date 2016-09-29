@@ -11,8 +11,8 @@ namespace libmumbot {
 		listener_ = listener;
 		srctype_ = srctype;
 		int errors;
-		opusEncoder_ = opus_encoder_create(48000,1,OPUS_APPLICATION_VOIP, &errors);
-		opus_encoder_ctl(opusEncoder_,OPUS_SET_BITRATE(96000));
+		opusEncoder_ = opus_encoder_create(48000,1,OPUS_APPLICATION_AUDIO, &errors);
+		opus_encoder_ctl(opusEncoder_,OPUS_SET_BITRATE(192000)); //TODO configurable bitrate
 
 		if (srctype_ == AUDIO_INPUT_SRC_FIFO) { //fifo buffer
 			audioPipe_.open(param,std::ifstream::in);
