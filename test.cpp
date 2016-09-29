@@ -5,6 +5,7 @@
 #include "libmumbot/libmumbot.h"
 //#include <string.h>
 
+//youtube-dl -o './mpd/music/youtube-dl/%(title)s.%(ext)s' --audio-quality 1 -x 'https://www.youtube.com/watch?v=4Tr0otuiQuU'
 
 std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 
