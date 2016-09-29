@@ -5,6 +5,7 @@
 #include "libmumbot/opus/AudioInputWriterListener.h"
 #include <memory>
 #include <string>
+#include "libmumbot/MumBotConfig.h"
 
 
 uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
@@ -51,4 +52,5 @@ class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::A
 		libmumbot::MumBotConnectionMgr connMgr_;
 		std::shared_ptr<libmumbot::AudioInputOpusWriter> opusWriter_;
 		uint64_t audioSequence_ = 0;
+		libmumbot::MumBotConfig botConfig_;
 };

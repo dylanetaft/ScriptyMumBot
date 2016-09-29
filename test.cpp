@@ -13,6 +13,7 @@ std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 void ScriptyMumBot::start() {
     connMgr_.setListener(this);
     connMgr_.setStateObject(&mumState_);
+    botConfig_.loadConfig("test.ini");
     connMgr_.startClient("cookwithkevin.com","64738");
 }
 
