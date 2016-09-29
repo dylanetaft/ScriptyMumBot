@@ -12,6 +12,7 @@ std::string getVint(uint64_t val);
 
 class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::AudioInputWriterListener {
 	public:
+		void start();
 		void recvACL(MumbleProto::ACL msg);
 		void recvChanACL(MumbleProto::ACL_ChanACL);
 		void recvACLChanGroup(MumbleProto::ACL_ChanGroup msg);
@@ -46,5 +47,8 @@ class ScriptyMumBot : public libmumbot::MumBotEventListener, public libmumbot::A
 		void recvVoiceTargetTarget (MumbleProto::VoiceTarget_Target msg);
 		void onAudioEncodedDataReady(uint8_t *data, uint32_t len);
 	private:
+		libmumbot::MumBotState mumState_;
+		libmumbot::MumBotConnectionMgr connMgr_;
 		std::shared_ptr<libmumbot::AudioInputOpusWriter> opusWriter_;
+		uint64_t audioSequence_ = 0;
 };

@@ -8,7 +8,11 @@
 std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
 
 
-
+void ScriptyMumBot::start() {
+    connMgr_.setListener(this);
+    connMgr_.setStateObject(&mumState_);
+    connMgr_.startClient("cookwithkevin.com","64738");
+}
 
 void ScriptyMumBot::recvACL(MumbleProto::ACL msg) {}
 void ScriptyMumBot::recvChanACL(MumbleProto::ACL_ChanACL) {}
@@ -38,7 +42,18 @@ void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
 
 void ScriptyMumBot::onAudioEncodedDataReady(uint8_t *data, uint32_t len) {
     std::cout << "Audio data recv:" << len << "\n";
+    std::string msg;
 
+    uint8_t apkt_header = libmumbot::MumBotConnectionMgr::APKT_TYPE_OPUS;
+    apkt_header += 0; //talking to channel, normal talking
+    uint32_t apkt_posinfo[3] = {0,0,0};
+    msg = msg + (char)apkt_header;
+    msg = msg + getVint(audioSequence_);
+    msg = msg + getVint(len);
+    msg.append((char *)data,len);
+    msg.append(audioSequence_,sizeof(apkt_posinfo));
+    connMgr_.sendUDPTunnelAudioData(msg);
+    audioSequence_++;
 }
 
 void ScriptyMumBot::recvUDPTunnel (std::string msg) {
@@ -210,12 +225,7 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //
 int main() {
 
   ScriptyMumBot bot;
-  libmumbot::MumBotState state;
-  libmumbot::MumBotConnectionMgr mgr;
-  mgr.setListener(&bot);
-  //mgr.setAudioInputSource(libmumbot::MumBotAudioInput::INPUTTYPE_FIFO,".\\mpd\\mpd.fifo"); //where the hell should this live?
-  mgr.setStateObject(&state);
-  mgr.startClient("cookwithkevin.com","64738");
+  bot.start();
   //ShutdownSSL();
 
   return 0;

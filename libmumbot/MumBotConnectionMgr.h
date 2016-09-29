@@ -23,6 +23,9 @@ namespace libmumbot {
 		void setListener(MumBotEventListener *listener);
 		void setStateObject(MumBotState *state);
 	    void startClient(std::string host, std::string port);
+
+		void sendUDPTunnelAudioData(std::string buffer);
+
 	private:
 	    static const short PKT_TYPE_VERSION = 0;
 		static const short PKT_TYPE_UDPTUNNEL = 1;

@@ -20,6 +20,10 @@ namespace libmumbot {
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
 		mumState_ = state;
 	}
+
+	void MumBotConnectionMgr::sendUDPTunnelAudioData(std::string buffer) {
+		sendData(PKT_TYPE_UDPTUNNEL, buffer);
+	}
 	void MumBotConnectionMgr::sendData(short pktType, std::string data) { //
 	  long len = data.length();
 	  std::lock_guard<std::mutex> lock(mutex_);
