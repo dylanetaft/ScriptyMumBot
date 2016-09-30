@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <string>
 #include "MumBotEventListener.h"
-#include "mumbotstate.h"
+#include "MumBotState.h"
 
 namespace libmumbot {
 	class MumBotConnectionMgr {
