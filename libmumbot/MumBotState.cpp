@@ -1,4 +1,4 @@
-#include "mumbotstate.h"
+#include "MumBotState.h"
 
 namespace libmumbot {
 
