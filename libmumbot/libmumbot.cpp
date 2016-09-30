@@ -1,6 +1,7 @@
 #include "libmumbot.h"
 
 
+
 std::string getVint(uint64_t val) { //TODO deal with endianness
     std::string retval;
 	D(std::cout << "Encoding vint:" << val << "\n");
