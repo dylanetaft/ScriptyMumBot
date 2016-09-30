@@ -1,5 +1,6 @@
 #include "MumBotConfig.h"
 
+
 using namespace std;
 namespace libmumbot {
 
@@ -10,6 +11,32 @@ namespace libmumbot {
 			source[i] = tolower(source[i],loc);
 		}
 	}
+
+	list<string>  MumBotConfig::getScriptsForInput(string input) {
+		list<string> commands;
+
+		for (auto command : scriptSections_) {
+			string testRegexStr;
+			try {
+				testRegexStr = command->at("regex");
+				regex testRegex(testRegexStr);
+				if (regex_match(input,testRegex)) {
+					string commandStr = command->at("script");
+					commands.push_back(commandStr);
+				}
+			}
+			catch (const std::exception& e) { //command doesnt have a regex section
+				std::cout << e.what();
+			}
+
+
+		}
+		return commands;
+	}
+	string MumBotConfig::getSectionSetting(string section) {
+		return "";
+	}
+
 	void MumBotConfig::loadConfig(string iniPath) {
 		ifstream inifile(iniPath);
 		smatch matchObj;
@@ -30,7 +57,7 @@ namespace libmumbot {
 				string section = matchObj[2].str();
 				strToLower(section);
 				currentKeyValPtr = make_shared<map<string,string>>();
-				if (section != "script") {
+				if (section != "command") {
 					configSections_[section] = currentKeyValPtr;
 				}
 				else {

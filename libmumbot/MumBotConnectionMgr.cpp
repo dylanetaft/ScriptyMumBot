@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 #include "proto/Mumble.pb.h"
+#include "libmumbot.h"
 
 namespace libmumbot {
 	const short MumBotConnectionMgr::APKT_TYPE_CELT;
@@ -35,7 +36,7 @@ namespace libmumbot {
 	  memcpy(buffer + 2, (const void *) &pktLenN, 4);
 	  memcpy(buffer + 6, data.data(), len);
 	  int sent = gnutls_record_send(gnutls_session_,buffer,len + 6);
-	  std::cout << "Send pkt " << pktType << " len:" << len << "sent:" << sent  << "\n";
+	  D(std::cout << "Send pkt " << pktType << " len:" << len << "sent:" << sent  << "\n");
 	  if (sent != len + 6) {
 	    std::cout << "Can this actually happen?\n";
 	    std::cout << sent << "\n";
@@ -114,6 +115,12 @@ namespace libmumbot {
 				if (eventListener_ != NULL) eventListener_->recvServerSync(sync);
 	            break;
 	          }
+			  case PKT_TYPE_TEXTMESSAGE: {
+				  MumbleProto::TextMessage txt;
+				  txt.ParseFromString(packet);
+				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
+				  break;
+			  }
 
 	        }
 	      }

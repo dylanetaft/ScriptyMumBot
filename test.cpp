@@ -4,6 +4,7 @@
 #include <fstream>
 #include "libmumbot/libmumbot.h"
 //#include <string.h>
+#include <stdio.h>
 
 //youtube-dl -o './mpd/music/youtube-dl/%(title)s.%(ext)s' --audio-quality 1 -x 'https://www.youtube.com/watch?v=4Tr0otuiQuU'
 
@@ -41,10 +42,22 @@ void ScriptyMumBot::recvServerSync (MumbleProto::ServerSync msg) {
 
 }
 void ScriptyMumBot::recvSuggestConfig (MumbleProto::SuggestConfig msg) {}
-void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {}
+void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {
+    std::string textMsg = msg.message();
+    auto cmds = botConfig_.getScriptsForInput(textMsg);
+
+    for (auto cmd:cmds) {
+        std::cout << cmd << "\n";
+        FILE *fp = popen(cmd.c_str(),"w");
+        if (fp != NULL) {
+            std::fputs(textMsg.c_str(), fp);
+            pclose(fp);
+        }
+        //execl("ls","./");
+    }
+}
 
 void ScriptyMumBot::onAudioEncodedDataReady(uint8_t *data, uint16_t len) {
-    std::cout << "Audio data recv:" << len << "\n";
     std::string msg;
 
     uint8_t apkt_header = libmumbot::MumBotConnectionMgr::APKT_TYPE_OPUS;

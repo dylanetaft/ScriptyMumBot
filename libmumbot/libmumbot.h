@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-#define DEBUG
+#define DEBUG1
 
 #ifdef DEBUG
 #define D(x) x
@@ -14,6 +14,11 @@
 #define D(x)
 #endif
 
+#ifdef DEBUG1
+#define D1(x) x
+#else
+#define D1(x)
+#endif
 
 std::string getVint(uint64_t val);
 uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos);
