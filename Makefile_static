@@ -3,7 +3,9 @@ LDFLAGS =
 CXXFLAGS = -std=c++1z -ggdb
 
 CXXFLAGS += $(shell pkg-config gnutls --cflags;pkg-config protobuf --cflags;pkg-config opus --cflags;pkg-config ogg --cflags)
-LDFLAGS += $(shell pkg-config gnutls --libs;pkg-config protobuf --libs;pkg-config opus --libs;pkg-config ogg --libs)
+LDFLAGS += $(shell pkg-config protobuf --static --libs;pkg-config opus --static --libs;pkg-config ogg --static --libs)
+LDFLAGS += -lgnutls -lgmp -lhogweed -lgmp -lnettle -ltasn1 -lidn -lz
+CXXFLAGS += -static
 
 default: bot
 
