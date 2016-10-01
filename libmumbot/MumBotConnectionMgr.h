@@ -10,7 +10,7 @@
 #include <string>
 #include "MumBotEventListener.h"
 #include "MumBotState.h"
-
+#include <mutex>
 namespace libmumbot {
 	class MumBotConnectionMgr {
 	public:
