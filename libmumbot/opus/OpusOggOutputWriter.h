@@ -3,6 +3,7 @@
 #include <ogg/ogg.h>
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 namespace libmumbot {
 	void le32(unsigned char *p,int v);

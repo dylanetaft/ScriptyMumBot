@@ -88,7 +88,7 @@ namespace libmumbot {
 		int s = 19;
 		uint8_t *data = (uint8_t *)malloc(s);
 		ogg_packet *pkt = (ogg_packet *)malloc(sizeof(ogg_packet));
-		memcpy(data,"OpusHead",8);
+		std::memcpy(data,"OpusHead",8);
 		data[8] = 1; //version
 		data[9] = 2; //channels
 		le16(data +10,0); //pre-skip
@@ -113,9 +113,9 @@ namespace libmumbot {
 		unsigned char *data = (unsigned char *) malloc(size);
 		ogg_packet *pkt = (ogg_packet *)malloc(sizeof(ogg_packet));
 
-		memcpy(data, identifier, 8);
+		std::memcpy(data, identifier, 8);
 		le32(data + 8, strlen(vendor));
-		memcpy(data + 12, vendor, strlen(vendor));
+		std::memcpy(data + 12, vendor, strlen(vendor));
 		le32(data + 12 + strlen(vendor), 0);
 
 		pkt->packet = data;
