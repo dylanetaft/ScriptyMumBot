@@ -4,7 +4,7 @@
 #include "MumBotConnectionMgr.h"
 #include <string>
 #include <iostream>
-
+#include <cstring>
 
 #define DEBUG1
 

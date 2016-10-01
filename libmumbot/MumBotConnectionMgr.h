@@ -11,6 +11,7 @@
 #include "MumBotEventListener.h"
 #include "MumBotState.h"
 #include <mutex>
+#include <cstring>
 namespace libmumbot {
 	class MumBotConnectionMgr {
 	public:
