@@ -6,6 +6,7 @@
 //#include <string.h>
 #include <stdio.h>
 
+using namespace std;
 //youtube-dl -o './mpd/music/youtube-dl/%(title)s.%(ext)s' --audio-quality 1 -x 'https://www.youtube.com/watch?v=4Tr0otuiQuU'
 
 std::map <uint32_t,libmumbot::OpusOggOutputWriter *> filemap;
@@ -15,7 +16,9 @@ void ScriptyMumBot::start() {
     connMgr_.setListener(this);
     connMgr_.setStateObject(&mumState_);
     botConfig_.loadConfig("test.ini");
-    connMgr_.startClient("cookwithkevin.com","64738");
+	string nickname = botConfig_.getSectionSetting("general","nickname");
+	if (nickname == "") nickname = "defaultalias";
+    connMgr_.startClient(botConfig_.getSectionSetting("general","server"),botConfig_.getSectionSetting("general","port"), nickname);
 }
 
 void ScriptyMumBot::recvACL(MumbleProto::ACL msg) {}

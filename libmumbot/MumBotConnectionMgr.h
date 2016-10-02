@@ -23,7 +23,7 @@ namespace libmumbot {
 
 		void setListener(MumBotEventListener *listener);
 		void setStateObject(MumBotState *state);
-	    void startClient(std::string host, std::string port);
+	    void startClient(std::string host, std::string port, std::string nickname);
 
 		void sendUDPTunnelAudioData(std::string buffer);
 

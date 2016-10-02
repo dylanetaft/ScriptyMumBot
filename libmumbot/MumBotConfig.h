@@ -14,7 +14,7 @@ namespace libmumbot {
 		MumBotConfig(){};
 		void loadConfig(std::string iniFilePath);
 		std::list<std::string> getScriptsForInput(std::string input);
-		std::string getSectionSetting(std::string section);
+		std::string getSectionSetting(std::string section, std::string setting);
 
 	private:
 		std::map< std::string, std::shared_ptr< std::map <std::string, std::string> > > configSections_;

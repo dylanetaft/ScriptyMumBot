@@ -33,7 +33,17 @@ namespace libmumbot {
 		}
 		return commands;
 	}
-	string MumBotConfig::getSectionSetting(string section) {
+	string MumBotConfig::getSectionSetting(string section, string setting) {
+
+		try {
+			auto ptr = configSections_.at(section);
+			string val = ptr->at(setting);
+			return val;
+
+		}
+		catch (exception& e) {
+
+		}
 		return "";
 	}
 

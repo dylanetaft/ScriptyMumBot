@@ -14,6 +14,9 @@
 #include "proto/Mumble.pb.h"
 #include "libmumbot.h"
 
+using namespace std;
+
+
 namespace libmumbot {
 	const short MumBotConnectionMgr::APKT_TYPE_CELT;
 	const short MumBotConnectionMgr::APKT_TYPE_PING;
@@ -187,7 +190,7 @@ namespace libmumbot {
 	  std::cout << "Verify cert\n";
 	  return 0;
 	}
-	void MumBotConnectionMgr::startClient(std::string host, std::string port) {
+	void MumBotConnectionMgr::startClient(string host, string port, string nickname) {
 
 	  gnutls_global_init();
 	  gnutls_anon_client_credentials_t anoncred;
@@ -229,7 +232,7 @@ namespace libmumbot {
 	  }
 
 	  sendData(PKT_TYPE_VERSION,createVersionPktData());
-	  sendData(PKT_TYPE_AUTH,createAuthPktData("CPPBOT"));
+	  sendData(PKT_TYPE_AUTH,createAuthPktData(nickname));
 
 	  //sendData(PKT_TYPE_USERSTATE,createDeafMutePktData());
 
