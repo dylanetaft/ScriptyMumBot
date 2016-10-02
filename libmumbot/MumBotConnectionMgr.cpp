@@ -11,7 +11,7 @@
 
 
 
-#include "proto/Mumble.pb.h"
+
 #include "libmumbot.h"
 
 using namespace std;
@@ -23,6 +23,12 @@ namespace libmumbot {
 	const short MumBotConnectionMgr::APKT_TYPE_SPEEX;
 	const short MumBotConnectionMgr::APKT_TYPE_CELT_BETA;
 	const short MumBotConnectionMgr::APKT_TYPE_OPUS;
+
+
+	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
+
+		 return grpc::Status::OK;
+	}
 
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
 		mumState_ = state;

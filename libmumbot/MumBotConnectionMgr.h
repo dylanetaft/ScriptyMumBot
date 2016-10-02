@@ -12,8 +12,12 @@
 #include "MumBotState.h"
 #include <mutex>
 #include <cstring>
+#include "proto/Mumble.pb.h"
+#include "proto/MumBot.pb.h"
+#include "proto/MumBot.grpc.pb.h"
+
 namespace libmumbot {
-	class MumBotConnectionMgr {
+	class MumBotConnectionMgr : public MumBotRPC::Service {
 	public:
 		static const short APKT_TYPE_CELT = 0b00000000;
 		static const short APKT_TYPE_PING = 0b00100000;
@@ -26,6 +30,7 @@ namespace libmumbot {
 	    void startClient(std::string host, std::string port, std::string nickname);
 
 		void sendUDPTunnelAudioData(std::string buffer);
+		::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response);
 
 	private:
 	    static const short PKT_TYPE_VERSION = 0;
