@@ -240,8 +240,8 @@ namespace libmumbot {
 	  getaddrinfo(host.c_str(),port.c_str(),&hints, &res);
 	  mumCmd_socketFD_  = socket(res->ai_family, res->ai_socktype, res->ai_protocol); //TODO disable Nagle's algorithm??
 	  connect(mumCmd_socketFD_,res->ai_addr,res->ai_addrlen);
-	  FD_SET(mumCmd_socketFD_, &socketSet_);
-	  mum_maxSocketFD_ = mumCmd_socketFD_;
+	  //FD_SET(mumCmd_socketFD_, &socketSet_);
+	  //mum_maxSocketFD_ = mumCmd_socketFD_;
 
 
 	  gnutls_transport_set_int(gnutls_session_, mumCmd_socketFD_);
@@ -262,7 +262,7 @@ namespace libmumbot {
 
 	  clientLoopThread_ = std::thread(&MumBotConnectionMgr::clientLoop,this);
 	  clientKeepAliveThread_ = std::thread(&MumBotConnectionMgr::clientKeepAlive,this);
-	  //startRPCSerice(); //will wait
+	  startRPCSerice(); //will wait
 	  for(;;) { //can do stuff here
 	    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	  }

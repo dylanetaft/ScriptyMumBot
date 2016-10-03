@@ -1,0 +1,14 @@
+syntax = "proto3";
+package libmumbot;
+
+service MumBotRPC {
+	rpc Say(TextMessage) returns (TextMessageResponse){};
+}
+
+message TextMessageResponse {
+	bool success = 1;
+}
+
+message TextMessage {
+	string msg = 1;
+}

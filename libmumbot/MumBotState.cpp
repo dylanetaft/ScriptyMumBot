@@ -31,7 +31,7 @@ namespace libmumbot {
 
 	}
 	void MumBotState::updateUserState(MumbleProto::UserState msg, bool del) {
-		uint32_t id = msg.user_id();
+		uint32_t id = msg.session();
 
 		if (userStates_.count(id) == 0) { //new user state
 			userStates_[id] = msg;
