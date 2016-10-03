@@ -15,6 +15,17 @@
 #include "proto/Mumble.pb.h"
 #include "proto/MumBot.pb.h"
 #include "proto/MumBot.grpc.pb.h"
+#include <memory>
+
+//GRPC includes
+#include <grpc/grpc.h>
+#include <grpc++/server.h>
+#include <grpc++/server_builder.h>
+#include <grpc++/server_context.h>
+#include <grpc++/security/server_credentials.h>
+
+
+
 
 namespace libmumbot {
 	class MumBotConnectionMgr : public MumBotRPC::Service {
@@ -54,7 +65,7 @@ namespace libmumbot {
 	    uint8_t c_headerpos_ = 0;
 	    uint32_t c_datapos_ = 0;
 	    uint8_t *c_data_;
-
+		uint32_t myMumbleSessionId_ = -1;
 	    fd_set socketSet_;
 		libmumbot::MumBotEventListener *eventListener_ = NULL;
 		libmumbot::MumBotState *mumState_ = NULL;
@@ -69,6 +80,7 @@ namespace libmumbot {
 	    void clientKeepAlive();
 	    void sendData(short pktType, std::string data);
 	    bool processInboundPkt();
+		void startRPCSerice();
 
 	    std::string createVersionPktData();
 	    std::string createAuthPktData(std::string username);

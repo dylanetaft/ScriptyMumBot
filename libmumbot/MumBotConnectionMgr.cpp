@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 
+#include <cerrno>
 
 
 
@@ -26,8 +27,12 @@ namespace libmumbot {
 
 
 	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
-
-		 return grpc::Status::OK;
+		MumbleProto::TextMessage mtxt;
+		mtxt.set_message(request->msg());
+		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
+		mtxt.add_channel_id(state.channel_id()); //send to my channel
+		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
+		return grpc::Status::OK;
 	}
 
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
@@ -64,9 +69,10 @@ namespace libmumbot {
 
 	    //if (gnutls_record_check_pending(gnutls_session_) == 0) return 0;
 	    if (c_headerpos_< 6) { //reading header
-	      int bytesr = gnutls_record_recv(gnutls_session_,c_headerbuffer_ + c_headerpos_, 6 - c_headerpos_);
-	      if (bytesr < 0) {
-	        std::cout << "Connection error reading header.\n";
+	      	int bytesr = gnutls_record_recv(gnutls_session_,c_headerbuffer_ + c_headerpos_, 6 - c_headerpos_);
+	      	if (bytesr < 0) {
+				int terr = errno;
+	        	std::cout << "GNUTLS recv mumble header errorno: " <<  terr << " retval:" << bytesr << "\n";
 	        return 0;
 	      }
 	      else if (bytesr == 0) {
@@ -79,14 +85,15 @@ namespace libmumbot {
 	    }
 	    //if (gnutls_record_check_pending(gnutls_session_) == 0) return 0;
 
-	    if (c_headerpos_ == 6) { //todo deal with endian
+	    if (c_headerpos_ == 6) { //TODO deal with endian
 	    uint16_t pkttype = c_headerbuffer_[0] << 8 | c_headerbuffer_[1];
 	    uint32_t pktlen = c_headerbuffer_[2] << 24 | c_headerbuffer_[3] << 16 | c_headerbuffer_[4] << 8 | c_headerbuffer_[5];
 	    std::cout << "Pkt type:" << pkttype << " Pkt len:" << pktlen << "\n";
 	    if (c_datapos_ == 0) c_data_ = (uint8_t *) malloc(pktlen); //initialize new ram
 	    int bytesr = gnutls_record_recv(gnutls_session_,c_data_ + c_datapos_, pktlen - c_datapos_);
 	    if (bytesr < 0) {
-	      std::cout << "Connection error reading data.\n";
+			int terr = errno;
+			std::cout << "GNUTLS errno recv mumble pkt body errno:" << terr << " retval:" << bytesr << "\n";
 	    }
 	    else if (bytesr == 0) {
 	      std::cout << "EOF reading data.\n";
@@ -124,6 +131,7 @@ namespace libmumbot {
 	            std::cout << "Server sync packet\n";
 				MumbleProto::ServerSync sync;
 				sync.ParseFromString(packet);
+				myMumbleSessionId_ = sync.session(); //my user id
 				if (eventListener_ != NULL) eventListener_->recvServerSync(sync);
 	            break;
 	          }
@@ -196,6 +204,15 @@ namespace libmumbot {
 	  std::cout << "Verify cert\n";
 	  return 0;
 	}
+
+	void MumBotConnectionMgr::startRPCSerice() {
+		grpc::ServerBuilder builder;
+		builder.AddListeningPort("0.0.0.0:50080",grpc::InsecureServerCredentials());
+		builder.RegisterService(this);
+		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+		server->Wait();
+
+	}
 	void MumBotConnectionMgr::startClient(string host, string port, string nickname) {
 
 	  gnutls_global_init();
@@ -245,6 +262,7 @@ namespace libmumbot {
 
 	  clientLoopThread_ = std::thread(&MumBotConnectionMgr::clientLoop,this);
 	  clientKeepAliveThread_ = std::thread(&MumBotConnectionMgr::clientKeepAlive,this);
+	  //startRPCSerice(); //will wait
 	  for(;;) { //can do stuff here
 	    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	  }

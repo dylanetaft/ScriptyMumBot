@@ -1,7 +1,18 @@
 #include "MumBotState.h"
+#include <stdexcept>
+#include <iostream>
+
 
 namespace libmumbot {
 
+	MumbleProto::UserState MumBotState::getUserState(uint32_t id) {
+		try {
+			return userStates_.at(id);
+		}
+		catch (const std::exception& e) {
+			throw std::out_of_range("MumBotState::getUserState no matching user id found " + std::to_string(id));
+		}
+	}
 	void MumBotState::updateChannelState(MumbleProto::ChannelState msg, bool del) {
 		uint32_t id = msg.channel_id();
 
@@ -34,6 +45,8 @@ namespace libmumbot {
 		else {
 			userStates_.erase(id);
 		}
+
+		std::cout << userStates_[id].name() << " " <<userStates_[id].session() << "\n";
 	}
 
 }
