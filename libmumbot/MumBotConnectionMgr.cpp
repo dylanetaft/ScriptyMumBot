@@ -10,8 +10,8 @@
 #include <chrono>
 
 #include <cerrno>
-
-
+#include <typeinfo>
+#include <type_traits>
 
 #include "libmumbot.h"
 
@@ -198,6 +198,54 @@ namespace libmumbot {
 	  return 0;
 	}
 
+
+	template<typename T, typename U>
+	class RPCRequestHandler {
+	private:
+		MumBotRPC::AsyncService *service_;
+		grpc::ServerCompletionQueue *cq_;
+		grpc::ServerContext ctx_;
+		enum CallStatus {CREATE, PROCESS, FINISH};
+		CallStatus status_;
+		U receivedMsg_;
+		grpc::ServerAsyncResponseWriter<T> *responder_;
+		T response_;
+
+		void process(libmumbot::TextMessageResponse &response) { //state machine for TextMessage
+
+			if (status_ == CallStatus::CREATE) {
+				status_ = CallStatus::PROCESS;
+				service_->RequestSay(&ctx_, &receivedMsg_, responder_, cq_, cq_, this);
+			}
+			else if (status_ == CallStatus::PROCESS) {
+				new RPCRequestHandler<T, U>(cq_, service_); //spawn new instance to handle new requests while we continue processing
+				std::cout << receivedMsg_.msg() << "\n";
+				response.set_success(true);
+				status_ = CallStatus::FINISH;
+				responder_->Finish(response_,grpc::Status::OK,this);
+			}
+			else { //assert status is FINISH
+				delete responder_;
+				delete this;
+			}
+
+		}
+
+	public:
+		enum ReqType { Say };
+		RPCRequestHandler(grpc::ServerCompletionQueue *cq, MumBotRPC::AsyncService *service) {
+			cq_ = cq;
+			service_ = service;
+			responder_ = new grpc::ServerAsyncResponseWriter<T>(&ctx_);
+			Proceed();
+		}
+
+		void Proceed() {
+			process(response_);
+		}
+
+	};
+
 	void MumBotConnectionMgr::startRPCSerice() {
 		grpc::ServerBuilder builder;
 		builder.AddListeningPort("0.0.0.0:50080",grpc::InsecureServerCredentials());
@@ -209,27 +257,15 @@ namespace libmumbot {
 		void *tag;
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
-		grpc::ServerContext context;
-		libmumbot::TextMessage receivedMsg;
+		RPCRequestHandler<libmumbot::TextMessageResponse,libmumbot::TextMessage> *rpcRequestHandler = new RPCRequestHandler<libmumbot::TextMessageResponse,libmumbot::TextMessage>(cq.get(),&asyncser);
 
-		grpc::ServerAsyncResponseWriter<libmumbot::TextMessageResponse> textMessageResponder(&context);
-//		    void RequestSay(::grpc::ServerContext* context, ::libmumbot::TextMessage* request, ::grpc::ServerAsyncResponseWriter< ::libmumbot::TextMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag)
-		asyncser.RequestSay(&context, &receivedMsg, &textMessageResponder, cq.get(), cq.get(), &textMessageResponder);
-
-		for (;;) {
+		for (;;) { //put this in its own thread, one CQ for each RPC type
 			cq->Next(&tag, &ok);
 			std::cout << "WOW\n";
-
 			if (ok) {
-				if (tag == &textMessageResponder) {
-					std::cout << receivedMsg.msg() << "\n";
-					std::cout << "this was also called\n";
-					TextMessageResponse response;
-					response.set_success(true);
-					textMessageResponder.Finish(response,grpc::Status::OK,&textMessageResponder);
-					cq->Next(&tag, &ok); //blocks until data is sent
-					asyncser.RequestSay(&context, &receivedMsg, &textMessageResponder, cq.get(), cq.get(), &textMessageResponder);
-				}
+
+				static_cast<RPCRequestHandler<libmumbot::TextMessageResponse,libmumbot::TextMessage> *>(tag)->Proceed(); //worst ever
+
 			}
 		}
 
