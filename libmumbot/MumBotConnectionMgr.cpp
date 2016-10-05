@@ -26,14 +26,7 @@ namespace libmumbot {
 	const short MumBotConnectionMgr::APKT_TYPE_OPUS;
 
 
-	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
-		MumbleProto::TextMessage mtxt;
-		mtxt.set_message(request->msg());
-		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
-		mtxt.add_channel_id(state.channel_id()); //send to my channel
-		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
-		return grpc::Status::OK;
-	}
+
 
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
 		mumState_ = state;
@@ -208,11 +201,54 @@ namespace libmumbot {
 	void MumBotConnectionMgr::startRPCSerice() {
 		grpc::ServerBuilder builder;
 		builder.AddListeningPort("0.0.0.0:50080",grpc::InsecureServerCredentials());
-		builder.RegisterService(this);
+		MumBotRPC::AsyncService asyncser;
+		builder.RegisterService(&asyncser);
+
+		auto cq = builder.AddCompletionQueue();
+		bool ok = false;
+		void *tag;
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
-		server->Wait();
+
+		grpc::ServerContext context;
+		libmumbot::TextMessage receivedMsg;
+
+		grpc::ServerAsyncResponseWriter<libmumbot::TextMessageResponse> textMessageResponder(&context);
+//		    void RequestSay(::grpc::ServerContext* context, ::libmumbot::TextMessage* request, ::grpc::ServerAsyncResponseWriter< ::libmumbot::TextMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag)
+		asyncser.RequestSay(&context, &receivedMsg, &textMessageResponder, cq.get(), cq.get(), &textMessageResponder);
+
+		for (;;) {
+			cq->Next(&tag, &ok);
+			std::cout << "WOW\n";
+
+			if (ok) {
+				if (tag == &textMessageResponder) {
+					std::cout << receivedMsg.msg() << "\n";
+					std::cout << "this was also called\n";
+					TextMessageResponse response;
+					response.set_success(true);
+					textMessageResponder.Finish(response,grpc::Status::OK,&textMessageResponder);
+					cq->Next(&tag, &ok); //blocks until data is sent
+					asyncser.RequestSay(&context, &receivedMsg, &textMessageResponder, cq.get(), cq.get(), &textMessageResponder);
+				}
+			}
+		}
+
+		//server->Wait();
 
 	}
+
+	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
+		std::cout << "Say was called\n";
+		MumbleProto::TextMessage mtxt;
+		mtxt.set_message(request->msg());
+		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
+		mtxt.add_channel_id(state.channel_id()); //send to my channel
+		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
+		return grpc::Status::OK;
+	}
+
+
+
 	void MumBotConnectionMgr::startClient(string host, string port, string nickname) {
 
 	  gnutls_global_init();

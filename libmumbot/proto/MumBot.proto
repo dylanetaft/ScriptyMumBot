@@ -3,6 +3,11 @@ package libmumbot;
 
 service MumBotRPC {
 	rpc Say(TextMessage) returns (TextMessageResponse){};
+	rpc SubscribeTo(MumBotServices) returns (Thing){};
+}
+
+message MumBotServices {
+
 }
 
 message TextMessageResponse {
