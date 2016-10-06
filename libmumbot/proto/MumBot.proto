@@ -3,11 +3,11 @@ package libmumbot;
 
 service MumBotRPC {
 	rpc Say(TextMessage) returns (TextMessageResponse){};
-	rpc SubscribeTo(MumBotServices) returns (Thing){};
+	rpc SubscribeToTextMessages(TextMessageRequest) returns (TextMessage){};
 }
 
-message MumBotServices {
-
+message TextMessageRequest {
+	string regex_search_pattern = 1;
 }
 
 message TextMessageResponse {

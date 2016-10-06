@@ -81,6 +81,7 @@ namespace libmumbot {
 	    void sendData(short pktType, std::string data);
 	    bool processInboundPkt();
 		void startRPCSerice();
+		void startRPCSubscribeToTextMessages(MumBotRPC::AsyncService *service, grpc::ServerCompletionQueue *cq);
 
 	    std::string createVersionPktData();
 	    std::string createAuthPktData(std::string username);
