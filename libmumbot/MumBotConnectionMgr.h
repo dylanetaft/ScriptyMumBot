@@ -23,7 +23,7 @@
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
 #include <grpc++/security/server_credentials.h>
-
+#include "MumBotRPCWorkQueueMgr.h"
 
 
 
@@ -41,8 +41,8 @@ namespace libmumbot {
 	    void startClient(std::string host, std::string port, std::string nickname);
 
 		void sendUDPTunnelAudioData(std::string buffer);
-		::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response);
-
+		::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) override;
+		::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::TextMessageRequest* request, ::grpc::ServerWriter<libmumbot::TextMessage>* writer) override;
 	private:
 	    static const short PKT_TYPE_VERSION = 0;
 		static const short PKT_TYPE_UDPTUNNEL = 1;
@@ -60,6 +60,7 @@ namespace libmumbot {
 
 
 
+		MumBotRPCWorkQueueMgr RPCWorkQueueMgr_;
 
 	    uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len
 	    uint8_t c_headerpos_ = 0;
@@ -81,7 +82,6 @@ namespace libmumbot {
 	    void sendData(short pktType, std::string data);
 	    bool processInboundPkt();
 		void startRPCSerice();
-		void startRPCSubscribeToTextMessages(MumBotRPC::AsyncService *service, grpc::ServerCompletionQueue *cq);
 
 	    std::string createVersionPktData();
 	    std::string createAuthPktData(std::string username);

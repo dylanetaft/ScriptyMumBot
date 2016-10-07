@@ -3,7 +3,7 @@ package libmumbot;
 
 service MumBotRPC {
 	rpc Say(TextMessage) returns (TextMessageResponse){};
-	rpc SubscribeToTextMessages(TextMessageRequest) returns (TextMessage){};
+	rpc SubscribeToTextMessages(TextMessageRequest) returns (stream TextMessage){};
 }
 
 message TextMessageRequest {

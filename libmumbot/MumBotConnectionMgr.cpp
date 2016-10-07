@@ -131,6 +131,7 @@ namespace libmumbot {
 			  case PKT_TYPE_TEXTMESSAGE: {
 				  MumbleProto::TextMessage txt;
 				  txt.ParseFromString(packet);
+				  //RPCWorkQueueMgr_.pushNextTextMessage(txt.message());
 				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
 				  break;
 			  }
@@ -198,118 +199,27 @@ namespace libmumbot {
 	  return 0;
 	}
 
-
-	template<typename T, typename U>
-	class RPCRequestHandler { //add destructor for cleanup TODO
-	private:
-		MumBotRPC::AsyncService *service_;
-		grpc::ServerCompletionQueue *cq_;
-		grpc::ServerContext ctx_;
-		enum CallStatus {CREATE, PROCESS, FINISH};
-		CallStatus status_;
-		T receivedMsg_;
-		grpc::ServerAsyncResponseWriter<U> *responder_;
-		U response_;
-
-
-		void process(libmumbot::TextMessageRequest &request, libmumbot::TextMessage &response) { //state machine for SubscribeToTextMessages
-
-			if (status_ == CallStatus::CREATE) { //open endpoint
-				status_ = CallStatus::PROCESS;
-				service_->RequestSubscribeToTextMessages(&ctx_, &receivedMsg_, responder_, cq_, cq_, this);
-			}
-			else if (status_ == CallStatus::PROCESS) {
-				new RPCRequestHandler<T, U>(cq_, service_); //spawn new instance to handle new requests while we continue processing
-				std::cout << receivedMsg_.regex_search_pattern() << "\n";
-				response.set_msg("LOL TEST");
-				status_ = CallStatus::FINISH;
-				responder_->Finish(response_,grpc::Status::OK,this);
-			}
-			else { //assert status is FINISH
-				delete responder_;
-				delete this;
-			}
-
-		}
-
-
-		void process(libmumbot::TextMessage &request, libmumbot::TextMessageResponse &response) { //state machine for TextMessage
-
-			if (status_ == CallStatus::CREATE) {
-				status_ = CallStatus::PROCESS;
-				service_->RequestSay(&ctx_, &receivedMsg_, responder_, cq_, cq_, this);
-			}
-			else if (status_ == CallStatus::PROCESS) {
-				new RPCRequestHandler<T, U>(cq_, service_); //spawn new instance to handle new requests while we continue processing
-				std::cout << receivedMsg_.msg() << "\n";
-				response.set_success(true);
-				status_ = CallStatus::FINISH;
-				responder_->Finish(response_,grpc::Status::OK,this);
-			}
-			else { //assert status is FINISH
-				delete responder_;
-				delete this;
-			}
-
-		}
-
-	public:
-
-		RPCRequestHandler(grpc::ServerCompletionQueue *cq, MumBotRPC::AsyncService *service) {
-			cq_ = cq;
-			service_ = service;
-			status_  = CallStatus::CREATE;
-			responder_ = new grpc::ServerAsyncResponseWriter<U>(&ctx_);
-			Proceed();
-		}
-
-		void Proceed() {
-			process(receivedMsg_, response_);
-		}
-
-	};
-
-	void MumBotConnectionMgr::startRPCSubscribeToTextMessages(MumBotRPC::AsyncService *service, grpc::ServerCompletionQueue *cq) {
-
-		bool ok = false;
-		void *tag;
-		RPCRequestHandler<libmumbot::TextMessageRequest,libmumbot::TextMessage> *rpcRequestHandler = new RPCRequestHandler<libmumbot::TextMessageRequest,libmumbot::TextMessage>(cq,service);
-		for (;;) {
-			cq->Next(&tag, &ok);
-			std::cout << "MUCH\n";
-			static_cast<RPCRequestHandler<libmumbot::TextMessageRequest,libmumbot::TextMessage> *>(tag)->Proceed(); //worst ever
-		}
-
-	}
 	void MumBotConnectionMgr::startRPCSerice() {
 		grpc::ServerBuilder builder;
 		builder.AddListeningPort("0.0.0.0:50080",grpc::InsecureServerCredentials());
-		MumBotRPC::AsyncService asyncser;
-		builder.RegisterService(&asyncser);
-
-		auto tmCq = builder.AddCompletionQueue(); //text message completion queue
-
-		auto cq = builder.AddCompletionQueue();
-		bool ok = false;
-		void *tag;
+		builder.RegisterService(this);
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
-
-		RPCRequestHandler<libmumbot::TextMessage,libmumbot::TextMessageResponse> *rpcRequestHandler = new RPCRequestHandler<libmumbot::TextMessage,libmumbot::TextMessageResponse>(cq.get(),&asyncser);
-
-		for (;;) { //put this in its own thread, one CQ for each RPC type
-			cq->Next(&tag, &ok);
-			std::cout << "WOW\n";
-			//if (ok) {
-				static_cast<RPCRequestHandler<libmumbot::TextMessage,libmumbot::TextMessageResponse> *>(tag)->Proceed(); //worst ever
-			//}
-		}
-
-		//cq shutdown
-
-		//server->Wait();
+		server->Wait();
 
 	}
 
+	grpc::Status MumBotConnectionMgr::SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::TextMessageRequest* request, ::grpc::ServerWriter<libmumbot::TextMessage>* writer) {
+		std::cout << "Calling me\n";
+		uint32_t myindex = RPCWorkQueueMgr_.createTextMessageQueue();
+
+		for (;;) {
+			std::string msg = RPCWorkQueueMgr_.getNextTextMessage(myindex); //will wait
+			std::cout << msg << "\n";
+		}
+
+
+		return grpc::Status::OK;
+	}
 	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
 		std::cout << "Say was called\n";
 		MumbleProto::TextMessage mtxt;
@@ -317,6 +227,7 @@ namespace libmumbot {
 		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
 		mtxt.add_channel_id(state.channel_id()); //send to my channel
 		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
+		std::this_thread::sleep_for(std::chrono::milliseconds(15000));
 		return grpc::Status::OK;
 	}
 
