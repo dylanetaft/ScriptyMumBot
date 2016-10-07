@@ -60,7 +60,7 @@ namespace libmumbot {
 
 
 
-		MumBotRPCWorkQueueMgr RPCWorkQueueMgr_;
+
 
 	    uint8_t c_headerbuffer_[6]; //first 2 bytes packet type, next 4 are len
 	    uint8_t c_headerpos_ = 0;
@@ -77,6 +77,7 @@ namespace libmumbot {
 	    std::mutex mutex_;
 	    std::thread clientLoopThread_;
 	    std::thread clientKeepAliveThread_;
+		MumBotRPCWorkQueueMgr RPCWorkQueueMgr_;
 	    void clientLoop();
 	    void clientKeepAlive();
 	    void sendData(short pktType, std::string data);

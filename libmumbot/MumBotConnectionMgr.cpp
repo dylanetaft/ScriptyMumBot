@@ -131,7 +131,7 @@ namespace libmumbot {
 			  case PKT_TYPE_TEXTMESSAGE: {
 				  MumbleProto::TextMessage txt;
 				  txt.ParseFromString(packet);
-				  //RPCWorkQueueMgr_.pushNextTextMessage(txt.message());
+				  RPCWorkQueueMgr_.pushNextTextMessage(txt.message());
 				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
 				  break;
 			  }
@@ -214,9 +214,10 @@ namespace libmumbot {
 
 		for (;;) {
 			std::string msg = RPCWorkQueueMgr_.getNextTextMessage(myindex); //will wait
+			std::cout << "ever make it here\n";
 			std::cout << msg << "\n";
 		}
-
+		std::cout << "NEVER make it here\n";
 
 		return grpc::Status::OK;
 	}
@@ -227,7 +228,6 @@ namespace libmumbot {
 		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
 		mtxt.add_channel_id(state.channel_id()); //send to my channel
 		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
-		std::this_thread::sleep_for(std::chrono::milliseconds(15000));
 		return grpc::Status::OK;
 	}
 

@@ -24,21 +24,22 @@ void MumBotRPCWorkQueueMgr::pushNextTextMessage(std::string msg) {
 		std::lock_guard<std::mutex>(i.second->cv_mtx);
 		i.second->queue.push(msg);
 		i.second->cv.notify_all();
+		std::cout << "Notify all\n";
 	}
 }
 
 std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
 	std::cout << "Calling getNextTextMessage\n";
 	std::unique_lock<std::mutex> tlock(txtMessageQueuesMutex_);
-	tlock.lock();
 	std::unique_ptr<TextMessageQueue> &ptr = textMessageQueues_[queueid]; //FIXME use at, bounds check
 	tlock.unlock();
 
 	std::unique_lock<std::mutex> qlock(ptr->cv_mtx);
-	qlock.lock();
-	while (!ptr->queue.empty()) {
+
+	while (ptr->queue.empty()) {
 		ptr->cv.wait(qlock); //will unlock ptr->mtx and wait for notification
 	}
+	std::cout << "lock 3\n";
 	qlock.lock();
 	std::string msg = ptr->queue.front();
 	ptr->queue.pop();
