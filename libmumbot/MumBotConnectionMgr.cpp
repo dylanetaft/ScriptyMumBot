@@ -129,9 +129,11 @@ namespace libmumbot {
 	            break;
 	          }
 			  case PKT_TYPE_TEXTMESSAGE: {
+				  std::cout << "Recv message" << "\n";
 				  MumbleProto::TextMessage txt;
 				  txt.ParseFromString(packet);
 				  RPCWorkQueueMgr_.pushNextTextMessage(txt.message());
+				  std::cout << "Recv message 2" << "\n";
 				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
 				  break;
 			  }
@@ -216,9 +218,13 @@ namespace libmumbot {
 			std::string msg = RPCWorkQueueMgr_.getNextTextMessage(myindex); //will wait
 			std::cout << "ever make it here\n";
 			std::cout << msg << "\n";
+			if (context->IsCancelled()) break;
+			libmumbot::TextMessage tmsg;
+			tmsg.set_msg(msg);
+			writer->Write(tmsg);
 		}
 		std::cout << "NEVER make it here\n";
-
+		RPCWorkQueueMgr_.removeTextMessageQueue(myindex);
 		return grpc::Status::OK;
 	}
 	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {

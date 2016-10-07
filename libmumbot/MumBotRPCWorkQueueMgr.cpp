@@ -5,6 +5,7 @@
 int MumBotRPCWorkQueueMgr::createTextMessageQueue() {
 	std::cout << "Calling createTextMessageQueue\n";
 	std::lock_guard<std::mutex> lock(txtMessageQueuesMutex_); //easiest solution for now
+	std::cout << "Calling createTextMessageQueue - 2\n";
 	auto ptr = std::make_unique<TextMessageQueue>();
 	textMessageQueues_[maxTextMessageQueueIndex_] = std::move(ptr);
 	maxTextMessageQueueIndex_++;
@@ -29,6 +30,7 @@ void MumBotRPCWorkQueueMgr::pushNextTextMessage(std::string msg) {
 }
 
 std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
+
 	std::cout << "Calling getNextTextMessage\n";
 	std::unique_lock<std::mutex> tlock(txtMessageQueuesMutex_);
 	std::unique_ptr<TextMessageQueue> &ptr = textMessageQueues_[queueid]; //FIXME use at, bounds check
@@ -40,8 +42,10 @@ std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
 		ptr->cv.wait(qlock); //will unlock ptr->mtx and wait for notification
 	}
 	std::cout << "lock 3\n";
-	qlock.lock();
+	//qlock.lock();
 	std::string msg = ptr->queue.front();
 	ptr->queue.pop();
 	return msg;
+
+
 }
