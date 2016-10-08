@@ -6,9 +6,9 @@
 #include <iostream>
 #include <cstring>
 
-#define DEBUG1
+//#define DEBUG1
 
-#ifdef DEBUG
+#ifdef DEBUG0
 #define D(x) x
 #else
 #define D(x)

@@ -176,7 +176,7 @@ namespace libmumbot {
 	}
 
 	std::string createVoicePktData() {
-		uint8_t header = 0b10000000; //opus, normal talking
+		//uint8_t header = 0b10000000; //opus, normal talking
 		return "";
 	}
 	std::string MumBotConnectionMgr::createVersionPktData() {
@@ -244,7 +244,7 @@ namespace libmumbot {
 	  gnutls_global_init();
 	  gnutls_anon_client_credentials_t anoncred;
 	  gnutls_certificate_credentials_t xcred;
-	  int ret,ii;
+	  int ret;
 
 
 	  gnutls_anon_allocate_client_credentials(&anoncred);
@@ -271,7 +271,7 @@ namespace libmumbot {
 
 
 	  gnutls_transport_set_int(gnutls_session_, mumCmd_socketFD_);
-	  //gnutls_certificate_set_verify_function(xcred, cert_verify_callback);
+	  gnutls_certificate_set_verify_function(xcred, cert_verify_callback);
 
 	  gnutls_handshake_set_timeout(gnutls_session_,GNUTLS_DEFAULT_HANDSHAKE_TIMEOUT);
 	  ret = gnutls_handshake(gnutls_session_);
@@ -300,3 +300,5 @@ namespace libmumbot {
 	}
 
 }
+
+

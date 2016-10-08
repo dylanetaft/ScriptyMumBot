@@ -76,7 +76,6 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //
         D(std::cout << "negative recursive varint read: " << vint << "\n"); //TODO
     }
     else if (vint_type >= 0b11110100) { //64 bit positive number
-		uint8_t d[8];
 		std::memcpy(tval,&data[pos] + 1,8);
     	vint = __builtin_bswap64(vint);
 
@@ -84,7 +83,6 @@ uint64_t readNextVint(std::string &data, uint32_t pos, uint32_t *finishpos) { //
 		D(std::cout << "64 bit varint read: " << vint << "\n");
     }
     else if (vint_type >= 0b11110000) { //32 bit positive number
-		uint8_t d[4];
 		std::memcpy(tval + 4,&data[pos] + 1,4);
 		vint = __builtin_bswap64(vint);
         *finishpos = pos + 5;
