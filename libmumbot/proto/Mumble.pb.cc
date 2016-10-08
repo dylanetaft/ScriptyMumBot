@@ -125,6 +125,7 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 }  // namespace
 
 
+void protobuf_AssignDesc_Mumble_2eproto() GOOGLE_ATTRIBUTE_COLD;
 void protobuf_AssignDesc_Mumble_2eproto() {
   protobuf_AddDesc_Mumble_2eproto();
   const ::google::protobuf::FileDescriptor* file =
@@ -760,6 +761,7 @@ inline void protobuf_AssignDescriptorsOnce() {
                  &protobuf_AssignDesc_Mumble_2eproto);
 }
 
+void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -897,6 +899,7 @@ void protobuf_ShutdownFile_Mumble_2eproto() {
   delete SuggestConfig_reflection_;
 }
 
+void protobuf_AddDesc_Mumble_2eproto() GOOGLE_ATTRIBUTE_COLD;
 void protobuf_AddDesc_Mumble_2eproto() {
   static bool already_here = false;
   if (already_here) return;
@@ -1091,16 +1094,6 @@ struct StaticDescriptorInitializer_Mumble_2eproto {
     protobuf_AddDesc_Mumble_2eproto();
   }
 } static_descriptor_initializer_Mumble_2eproto_;
-
-namespace {
-
-static void MergeFromFail(int line) GOOGLE_ATTRIBUTE_COLD;
-static void MergeFromFail(int line) {
-  GOOGLE_CHECK(false) << __FILE__ << ":" << line;
-}
-
-}  // namespace
-
 
 // ===================================================================
 
@@ -1434,7 +1427,9 @@ int Version::ByteSize() const {
 
 void Version::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.Version)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const Version* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const Version>(
           &from);
@@ -1449,7 +1444,9 @@ void Version::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Version::MergeFrom(const Version& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.Version)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_version()) {
       set_version(from.version());
@@ -1882,7 +1879,9 @@ int UDPTunnel::ByteSize() const {
 
 void UDPTunnel::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UDPTunnel)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UDPTunnel* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UDPTunnel>(
           &from);
@@ -1897,7 +1896,9 @@ void UDPTunnel::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UDPTunnel::MergeFrom(const UDPTunnel& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UDPTunnel)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_packet()) {
       set_has_packet();
@@ -2377,7 +2378,9 @@ int Authenticate::ByteSize() const {
 
 void Authenticate::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.Authenticate)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const Authenticate* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const Authenticate>(
           &from);
@@ -2392,7 +2395,9 @@ void Authenticate::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Authenticate::MergeFrom(const Authenticate& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.Authenticate)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   tokens_.MergeFrom(from.tokens_);
   celt_versions_.MergeFrom(from.celt_versions_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -3210,7 +3215,9 @@ int Ping::ByteSize() const {
 
 void Ping::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.Ping)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const Ping* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const Ping>(
           &from);
@@ -3225,7 +3232,9 @@ void Ping::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Ping::MergeFrom(const Ping& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.Ping)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_timestamp()) {
       set_timestamp(from.timestamp());
@@ -3856,7 +3865,9 @@ int Reject::ByteSize() const {
 
 void Reject::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.Reject)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const Reject* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const Reject>(
           &from);
@@ -3871,7 +3882,9 @@ void Reject::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Reject::MergeFrom(const Reject& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.Reject)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_type()) {
       set_type(from.type());
@@ -4328,7 +4341,9 @@ int ServerSync::ByteSize() const {
 
 void ServerSync::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ServerSync)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ServerSync* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ServerSync>(
           &from);
@@ -4343,7 +4358,9 @@ void ServerSync::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ServerSync::MergeFrom(const ServerSync& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ServerSync)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_session()) {
       set_session(from.session());
@@ -4709,7 +4726,9 @@ int ChannelRemove::ByteSize() const {
 
 void ChannelRemove::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ChannelRemove)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ChannelRemove* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ChannelRemove>(
           &from);
@@ -4724,7 +4743,9 @@ void ChannelRemove::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ChannelRemove::MergeFrom(const ChannelRemove& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ChannelRemove)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_channel_id()) {
       set_channel_id(from.channel_id());
@@ -5413,7 +5434,9 @@ int ChannelState::ByteSize() const {
 
 void ChannelState::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ChannelState)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ChannelState* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ChannelState>(
           &from);
@@ -5428,7 +5451,9 @@ void ChannelState::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ChannelState::MergeFrom(const ChannelState& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ChannelState)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   links_.MergeFrom(from.links_);
   links_add_.MergeFrom(from.links_add_);
   links_remove_.MergeFrom(from.links_remove_);
@@ -6209,7 +6234,9 @@ int UserRemove::ByteSize() const {
 
 void UserRemove::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserRemove)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserRemove* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserRemove>(
           &from);
@@ -6224,7 +6251,9 @@ void UserRemove::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserRemove::MergeFrom(const UserRemove& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserRemove)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_session()) {
       set_session(from.session());
@@ -7315,7 +7344,9 @@ int UserState::ByteSize() const {
 
 void UserState::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserState)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserState* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserState>(
           &from);
@@ -7330,7 +7361,9 @@ void UserState::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserState::MergeFrom(const UserState& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserState)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_session()) {
       set_session(from.session());
@@ -8660,7 +8693,9 @@ int BanList_BanEntry::ByteSize() const {
 
 void BanList_BanEntry::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.BanList.BanEntry)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const BanList_BanEntry* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const BanList_BanEntry>(
           &from);
@@ -8675,7 +8710,9 @@ void BanList_BanEntry::MergeFrom(const ::google::protobuf::Message& from) {
 
 void BanList_BanEntry::MergeFrom(const BanList_BanEntry& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.BanList.BanEntry)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_address()) {
       set_has_address();
@@ -8967,7 +9004,9 @@ int BanList::ByteSize() const {
 
 void BanList::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.BanList)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const BanList* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const BanList>(
           &from);
@@ -8982,7 +9021,9 @@ void BanList::MergeFrom(const ::google::protobuf::Message& from) {
 
 void BanList::MergeFrom(const BanList& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.BanList)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   bans_.MergeFrom(from.bans_);
   if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
     if (from.has_query()) {
@@ -9771,7 +9812,9 @@ int TextMessage::ByteSize() const {
 
 void TextMessage::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.TextMessage)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const TextMessage* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const TextMessage>(
           &from);
@@ -9786,7 +9829,9 @@ void TextMessage::MergeFrom(const ::google::protobuf::Message& from) {
 
 void TextMessage::MergeFrom(const TextMessage& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.TextMessage)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   session_.MergeFrom(from.session_);
   channel_id_.MergeFrom(from.channel_id_);
   tree_id_.MergeFrom(from.tree_id_);
@@ -10469,7 +10514,9 @@ int PermissionDenied::ByteSize() const {
 
 void PermissionDenied::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.PermissionDenied)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const PermissionDenied* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const PermissionDenied>(
           &from);
@@ -10484,7 +10531,9 @@ void PermissionDenied::MergeFrom(const ::google::protobuf::Message& from) {
 
 void PermissionDenied::MergeFrom(const PermissionDenied& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.PermissionDenied)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_permission()) {
       set_permission(from.permission());
@@ -11187,7 +11236,9 @@ int ACL_ChanGroup::ByteSize() const {
 
 void ACL_ChanGroup::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ACL.ChanGroup)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ACL_ChanGroup* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ACL_ChanGroup>(
           &from);
@@ -11202,7 +11253,9 @@ void ACL_ChanGroup::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ACL_ChanGroup::MergeFrom(const ACL_ChanGroup& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ACL.ChanGroup)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   add_.MergeFrom(from.add_);
   remove_.MergeFrom(from.remove_);
   inherited_members_.MergeFrom(from.inherited_members_);
@@ -11690,7 +11743,9 @@ int ACL_ChanACL::ByteSize() const {
 
 void ACL_ChanACL::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ACL.ChanACL)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ACL_ChanACL* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ACL_ChanACL>(
           &from);
@@ -11705,7 +11760,9 @@ void ACL_ChanACL::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ACL_ChanACL::MergeFrom(const ACL_ChanACL& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ACL.ChanACL)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_apply_here()) {
       set_apply_here(from.apply_here());
@@ -12102,7 +12159,9 @@ int ACL::ByteSize() const {
 
 void ACL::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ACL)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ACL* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ACL>(
           &from);
@@ -12117,7 +12176,9 @@ void ACL::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ACL::MergeFrom(const ACL& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ACL)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   groups_.MergeFrom(from.groups_);
   acls_.MergeFrom(from.acls_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -12971,7 +13032,9 @@ int QueryUsers::ByteSize() const {
 
 void QueryUsers::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.QueryUsers)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const QueryUsers* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const QueryUsers>(
           &from);
@@ -12986,7 +13049,9 @@ void QueryUsers::MergeFrom(const ::google::protobuf::Message& from) {
 
 void QueryUsers::MergeFrom(const QueryUsers& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.QueryUsers)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   ids_.MergeFrom(from.ids_);
   names_.MergeFrom(from.names_);
   if (from._internal_metadata_.have_unknown_fields()) {
@@ -13384,7 +13449,9 @@ int CryptSetup::ByteSize() const {
 
 void CryptSetup::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.CryptSetup)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const CryptSetup* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const CryptSetup>(
           &from);
@@ -13399,7 +13466,9 @@ void CryptSetup::MergeFrom(const ::google::protobuf::Message& from) {
 
 void CryptSetup::MergeFrom(const CryptSetup& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.CryptSetup)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_key()) {
       set_has_key();
@@ -14010,7 +14079,9 @@ int ContextActionModify::ByteSize() const {
 
 void ContextActionModify::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ContextActionModify)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ContextActionModify* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ContextActionModify>(
           &from);
@@ -14025,7 +14096,9 @@ void ContextActionModify::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ContextActionModify::MergeFrom(const ContextActionModify& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ContextActionModify)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_action()) {
       set_has_action();
@@ -14534,7 +14607,9 @@ int ContextAction::ByteSize() const {
 
 void ContextAction::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ContextAction)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ContextAction* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ContextAction>(
           &from);
@@ -14549,7 +14624,9 @@ void ContextAction::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ContextAction::MergeFrom(const ContextAction& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ContextAction)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_session()) {
       set_session(from.session());
@@ -15049,7 +15126,9 @@ int UserList_User::ByteSize() const {
 
 void UserList_User::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserList.User)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserList_User* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserList_User>(
           &from);
@@ -15064,7 +15143,9 @@ void UserList_User::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserList_User::MergeFrom(const UserList_User& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserList.User)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_user_id()) {
       set_user_id(from.user_id());
@@ -15308,7 +15389,9 @@ int UserList::ByteSize() const {
 
 void UserList::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserList)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserList* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserList>(
           &from);
@@ -15323,7 +15406,9 @@ void UserList::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserList::MergeFrom(const UserList& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserList)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   users_.MergeFrom(from.users_);
   if (from._internal_metadata_.have_unknown_fields()) {
     mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -15922,7 +16007,9 @@ int VoiceTarget_Target::ByteSize() const {
 
 void VoiceTarget_Target::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.VoiceTarget.Target)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const VoiceTarget_Target* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const VoiceTarget_Target>(
           &from);
@@ -15937,7 +16024,9 @@ void VoiceTarget_Target::MergeFrom(const ::google::protobuf::Message& from) {
 
 void VoiceTarget_Target::MergeFrom(const VoiceTarget_Target& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.VoiceTarget.Target)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   session_.MergeFrom(from.session_);
   if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
     if (from.has_channel_id()) {
@@ -16216,7 +16305,9 @@ int VoiceTarget::ByteSize() const {
 
 void VoiceTarget::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.VoiceTarget)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const VoiceTarget* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const VoiceTarget>(
           &from);
@@ -16231,7 +16322,9 @@ void VoiceTarget::MergeFrom(const ::google::protobuf::Message& from) {
 
 void VoiceTarget::MergeFrom(const VoiceTarget& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.VoiceTarget)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   targets_.MergeFrom(from.targets_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_id()) {
@@ -16763,7 +16856,9 @@ int PermissionQuery::ByteSize() const {
 
 void PermissionQuery::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.PermissionQuery)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const PermissionQuery* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const PermissionQuery>(
           &from);
@@ -16778,7 +16873,9 @@ void PermissionQuery::MergeFrom(const ::google::protobuf::Message& from) {
 
 void PermissionQuery::MergeFrom(const PermissionQuery& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.PermissionQuery)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_channel_id()) {
       set_channel_id(from.channel_id());
@@ -17231,7 +17328,9 @@ int CodecVersion::ByteSize() const {
 
 void CodecVersion::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.CodecVersion)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const CodecVersion* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const CodecVersion>(
           &from);
@@ -17246,7 +17345,9 @@ void CodecVersion::MergeFrom(const ::google::protobuf::Message& from) {
 
 void CodecVersion::MergeFrom(const CodecVersion& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.CodecVersion)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_alpha()) {
       set_alpha(from.alpha());
@@ -17707,7 +17808,9 @@ int UserStats_Stats::ByteSize() const {
 
 void UserStats_Stats::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserStats.Stats)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserStats_Stats* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserStats_Stats>(
           &from);
@@ -17722,7 +17825,9 @@ void UserStats_Stats::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserStats_Stats::MergeFrom(const UserStats_Stats& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserStats.Stats)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_good()) {
       set_good(from.good());
@@ -18629,7 +18734,9 @@ int UserStats::ByteSize() const {
 
 void UserStats::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.UserStats)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const UserStats* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const UserStats>(
           &from);
@@ -18644,7 +18751,9 @@ void UserStats::MergeFrom(const ::google::protobuf::Message& from) {
 
 void UserStats::MergeFrom(const UserStats& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.UserStats)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   certificates_.MergeFrom(from.certificates_);
   celt_versions_.MergeFrom(from.celt_versions_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -19723,7 +19832,9 @@ int RequestBlob::ByteSize() const {
 
 void RequestBlob::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.RequestBlob)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const RequestBlob* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const RequestBlob>(
           &from);
@@ -19738,7 +19849,9 @@ void RequestBlob::MergeFrom(const ::google::protobuf::Message& from) {
 
 void RequestBlob::MergeFrom(const RequestBlob& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.RequestBlob)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   session_texture_.MergeFrom(from.session_texture_);
   session_comment_.MergeFrom(from.session_comment_);
   channel_description_.MergeFrom(from.channel_description_);
@@ -20266,7 +20379,9 @@ int ServerConfig::ByteSize() const {
 
 void ServerConfig::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.ServerConfig)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const ServerConfig* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const ServerConfig>(
           &from);
@@ -20281,7 +20396,9 @@ void ServerConfig::MergeFrom(const ::google::protobuf::Message& from) {
 
 void ServerConfig::MergeFrom(const ServerConfig& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.ServerConfig)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_max_bandwidth()) {
       set_max_bandwidth(from.max_bandwidth());
@@ -20790,7 +20907,9 @@ int SuggestConfig::ByteSize() const {
 
 void SuggestConfig::MergeFrom(const ::google::protobuf::Message& from) {
 // @@protoc_insertion_point(generalized_merge_from_start:MumbleProto.SuggestConfig)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   const SuggestConfig* source = 
       ::google::protobuf::internal::DynamicCastToGenerated<const SuggestConfig>(
           &from);
@@ -20805,7 +20924,9 @@ void SuggestConfig::MergeFrom(const ::google::protobuf::Message& from) {
 
 void SuggestConfig::MergeFrom(const SuggestConfig& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:MumbleProto.SuggestConfig)
-  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (GOOGLE_PREDICT_FALSE(&from == this)) {
+    ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
+  }
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_version()) {
       set_version(from.version());

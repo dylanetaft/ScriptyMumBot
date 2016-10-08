@@ -33,19 +33,24 @@ std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
 
 	std::cout << "Calling getNextTextMessage\n";
 	std::unique_lock<std::mutex> tlock(txtMessageQueuesMutex_);
-	std::unique_ptr<TextMessageQueue> &ptr = textMessageQueues_[queueid]; //FIXME use at, bounds check
-	tlock.unlock();
+    try {
+        std::unique_ptr<TextMessageQueue> &ptr = textMessageQueues_.at(queueid); 
+        tlock.unlock();
 
-	std::unique_lock<std::mutex> qlock(ptr->cv_mtx);
+        std::unique_lock<std::mutex> qlock(ptr->cv_mtx);
 
-	while (ptr->queue.empty()) {
-		ptr->cv.wait(qlock); //will unlock ptr->mtx and wait for notification
-	}
-	std::cout << "lock 3\n";
-	//qlock.lock();
-	std::string msg = ptr->queue.front();
-	ptr->queue.pop();
-	return msg;
-
+        while (ptr->queue.empty()) {
+            ptr->cv.wait(qlock); //will unlock ptr->mtx and wait for notification
+        }
+        std::cout << "lock 3\n";
+        //qlock.lock();
+        std::string msg = ptr->queue.front();
+        ptr->queue.pop();
+        return msg;
+    }
+    catch (std::exception &e) {
+        throw std::out_of_range("MumBotRPCWorkQueueMgr::getNextTextMessage queueid does not exist " + std::to_string(queueid));
+    }
+    return "";
 
 }

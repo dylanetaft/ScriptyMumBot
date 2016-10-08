@@ -16,8 +16,8 @@ libmumbot.a: $(LIBMUMBOT_SRCS)
 	ar rcu libmumbot.a $(LIBMUMBOT_OBJS)
 
 
-scriptybot: test.cpp
-	$(CXX) $(CXXFLAGS) -c test.cpp
+scriptybot: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
-bot: test.o libmumbot.a
-	$(CXX) $(CXXFLAGS) test.o libmumbot.a $(LDFLAGS) -o bot
+bot: main.o libmumbot.a
+	$(CXX) $(CXXFLAGS) main.o libmumbot.a $(LDFLAGS) -o bot

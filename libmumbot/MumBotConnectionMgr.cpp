@@ -27,7 +27,9 @@ namespace libmumbot {
 
 
 
-
+    MumBotConnectionMgr::~MumBotConnectionMgr() {
+        std::cout << "Cleanup\n";
+    }
 	void MumBotConnectionMgr::setStateObject(MumBotState *state) {
 		mumState_ = state;
 	}
@@ -201,16 +203,17 @@ namespace libmumbot {
 	  return 0;
 	}
 
-	void MumBotConnectionMgr::startRPCSerice() {
+	void MumBotConnectionMgr::startRPCService() {
 		grpc::ServerBuilder builder;
 		builder.AddListeningPort("0.0.0.0:50080",grpc::InsecureServerCredentials());
 		builder.RegisterService(this);
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 		server->Wait();
+        std::cout << "Quitting!!!!\n";
 
 	}
 
-	grpc::Status MumBotConnectionMgr::SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::TextMessageRequest* request, ::grpc::ServerWriter<libmumbot::TextMessage>* writer) {
+	grpc::Status MumBotConnectionMgr::SubscribeToTextMessages(::grpc::ServerContext* context, const protobuf::TextMessageRequest* request, ::grpc::ServerWriter<protobuf::TextMessage>* writer) {
 		std::cout << "Calling me\n";
 		uint32_t myindex = RPCWorkQueueMgr_.createTextMessageQueue();
 
@@ -219,7 +222,7 @@ namespace libmumbot {
 			std::cout << "ever make it here\n";
 			std::cout << msg << "\n";
 			if (context->IsCancelled()) break;
-			libmumbot::TextMessage tmsg;
+			protobuf::TextMessage tmsg;
 			tmsg.set_msg(msg);
 			writer->Write(tmsg);
 		}
@@ -227,7 +230,7 @@ namespace libmumbot {
 		RPCWorkQueueMgr_.removeTextMessageQueue(myindex);
 		return grpc::Status::OK;
 	}
-	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) {
+	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const protobuf::TextMessage* request, protobuf::TextMessageResponse* response) {
 		std::cout << "Say was called\n";
 		MumbleProto::TextMessage mtxt;
 		mtxt.set_message(request->msg());
@@ -288,7 +291,7 @@ namespace libmumbot {
 
 	  clientLoopThread_ = std::thread(&MumBotConnectionMgr::clientLoop,this);
 	  clientKeepAliveThread_ = std::thread(&MumBotConnectionMgr::clientKeepAlive,this);
-	  startRPCSerice(); //will wait
+	  startRPCService(); //will wait
 	  for(;;) { //can do stuff here
 	    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	  }

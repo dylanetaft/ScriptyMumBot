@@ -49,7 +49,7 @@ void ScriptyMumBot::recvTextMessage (MumbleProto::TextMessage msg) {
     std::string textMsg = msg.message();
     auto cmds = botConfig_.getScriptsForInput(textMsg);
 
-    for (auto cmd:cmds) {
+    for (auto cmd:cmds) { //call script in ini file
         std::cout << cmd << "\n";
         FILE *fp = popen(cmd.c_str(),"w");
         if (fp != NULL) {

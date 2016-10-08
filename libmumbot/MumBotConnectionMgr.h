@@ -28,8 +28,9 @@
 
 
 namespace libmumbot {
-	class MumBotConnectionMgr : public MumBotRPC::Service {
+    class MumBotConnectionMgr : public protobuf::MumBotRPC::Service {
 	public:
+        ~MumBotConnectionMgr();
 		static const short APKT_TYPE_CELT = 0b00000000;
 		static const short APKT_TYPE_PING = 0b00100000;
 		static const short APKT_TYPE_SPEEX = 0b01000000;
@@ -41,8 +42,8 @@ namespace libmumbot {
 	    void startClient(std::string host, std::string port, std::string nickname);
 
 		void sendUDPTunnelAudioData(std::string buffer);
-		::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::TextMessage* request, ::libmumbot::TextMessageResponse* response) override;
-		::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::TextMessageRequest* request, ::grpc::ServerWriter<libmumbot::TextMessage>* writer) override;
+		::grpc::Status Say(::grpc::ServerContext* context, const protobuf::TextMessage* request, protobuf::TextMessageResponse* response) override;
+		::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const protobuf::TextMessageRequest* request, ::grpc::ServerWriter<protobuf::TextMessage>* writer) override;
 	private:
 	    static const short PKT_TYPE_VERSION = 0;
 		static const short PKT_TYPE_UDPTUNNEL = 1;
@@ -82,7 +83,7 @@ namespace libmumbot {
 	    void clientKeepAlive();
 	    void sendData(short pktType, std::string data);
 	    bool processInboundPkt();
-		void startRPCSerice();
+		void startRPCService();
 
 	    std::string createVersionPktData();
 	    std::string createAuthPktData(std::string username);
