@@ -13,11 +13,14 @@ mpc_command = "mpc -p 7701 -h localhost";
 channel = grpc.insecure_channel('127.0.0.1:50080')
 stub = proto.MumBot_pb2.MumBotRPCStub(channel)
 
-lastFileList_ = []
+lastFileList_ = dict([])
 
 
-def say(msg):
+def say(msg, toName = ""):
     pmsg = proto.MumBot_pb2.TextMessage(msg=msg)
+    if toName != "":
+        pmsg.toName.append(toName)
+    
     response = stub.Say(pmsg)
 
 
@@ -26,6 +29,7 @@ req   = proto.MumBot_pb2.TextMessageRequest(regex_search_pattern = "!(add|vol|sk
 response = stub.SubscribeToTextMessages(req)
 for res in response:
     m = re.search('(^!\w*)(\s*)([";<>%\s\/\w\d:\.\?=\-&]*)',res.msg)
+    fromName = res.fromName
     if m:
         print("matches");
         param = m.group(3)
@@ -56,8 +60,8 @@ for res in response:
                 m = re.search('^\d*$',param) #queue a local song
                 if m:
                     index = int(param)
-                    if len(lastFileList_) > 0 and index <= len(lastFileList_) - 1:
-                        filename = lastFileList_[index]
+                    if len(lastFileList_[fromName]) > 0 and index <= len(lastFileList_[fromName]) - 1:
+                        filename = lastFileList_[fromName][index]
                         cmdtoexecute = mpc_command + " -w add " + "'" + filename + "'"
                         os.system(cmdtoexecute)
                         p = os.popen(mpc_command + " current")
@@ -70,9 +74,9 @@ for res in response:
         elif command == '!vol':
             m = re.search('^\d*$',param)
             if m:
-                vol = command
+                vol = int(param)
                 if (vol >= 0 and vol <= 100):
-                    cmdtoexecute = mpc_command + " -w volume " + vol;
+                    cmdtoexecute = mpc_command + " -w volume " + str(vol);
                     os.system(cmdtoexecute)
         elif command == '!skip':
             cmdtoexecute = mpc_command + " -w next"
@@ -90,23 +94,23 @@ for res in response:
             
             files = glob.glob(mpd_music_path + '*')
             files.sort(key=os.path.getmtime)
-            lastFileList_ = []
+            cFileList = []
             count = 0
             for file in files:
                 filename = file[len(mpd_music_path):] #slice dir name from str
                 if param == "": #list all files
-                    lastFileList_.append(filename)
-                    say(msg=str(count) + " " + filename)
+                    cFileList.append(filename)
+                    say(msg=str(count) + " " + filename,toName = fromName)
                     count = count + 1
                 else:
                     foundstr = filename.lower().find(param.lower())
                     if foundstr != -1:
-                        lastFileList_.append(filename)
-                        say(msg=str(count) + " " + filename)
+                        cFileList.append(filename)
+                        say(msg=str(count) + " " + filename,toName = fromName)
                         count = count + 1
 
-            else:
-                m = re.search('^\d*$',param)
+            lastFileList_[fromName] = cFileList
+
 
 
 

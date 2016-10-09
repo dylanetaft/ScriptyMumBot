@@ -6,6 +6,7 @@
 namespace libmumbot {
 
 	MumbleProto::UserState MumBotState::getUserState(uint32_t id) {
+        std::lock_guard<std::mutex> lock(userStateMutex_);
 		try {
 			return userStates_.at(id);
 		}
@@ -13,7 +14,16 @@ namespace libmumbot {
 			throw std::out_of_range("MumBotState::getUserState no matching user id found " + std::to_string(id));
 		}
 	}
+    
+    uint32_t MumBotState::userNameToSession(std::string name) {
+        std::lock_guard<std::mutex> lock(userStateMutex_);
+        for (auto i : userStates_) {
+            if (name == i.second.name()) return i.first;
+        }
+        throw std::out_of_range("MumBotState::userNameToSession no matching user id found for" + name);
+    }
 	void MumBotState::updateChannelState(MumbleProto::ChannelState msg, bool del) {
+        std::lock_guard<std::mutex> lock(channelStateMutex_);
 		uint32_t id = msg.channel_id();
 
 		if (channelStates_.count(id) == 0) { //new user state
@@ -31,6 +41,7 @@ namespace libmumbot {
 
 	}
 	void MumBotState::updateUserState(MumbleProto::UserState msg, bool del) {
+        std::lock_guard<std::mutex> lock(userStateMutex_);
 		uint32_t id = msg.session();
 
 		if (userStates_.count(id) == 0) { //new user state

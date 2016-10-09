@@ -11,7 +11,11 @@ message TextMessageRequest {
 }
 
 message TextMessageResponse {
-	bool success = 1;
+    enum TextState {
+        SUCCESS = 0;
+        FAILURE_INVALID_TONAME = 1;
+    }
+	TextMessageResponse result = 1;
 }
 
 message TextMessage {

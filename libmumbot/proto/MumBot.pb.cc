@@ -27,6 +27,7 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* TextMessageResponse_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TextMessageResponse_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* TextMessageResponse_TextState_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* TextMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   TextMessage_reflection_ = NULL;
@@ -58,7 +59,7 @@ void protobuf_AssignDesc_MumBot_2eproto() {
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessageRequest, _is_default_instance_));
   TextMessageResponse_descriptor_ = file->message_type(1);
   static const int TextMessageResponse_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessageResponse, success_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessageResponse, result_),
   };
   TextMessageResponse_reflection_ =
     ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
@@ -71,6 +72,7 @@ void protobuf_AssignDesc_MumBot_2eproto() {
       sizeof(TextMessageResponse),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessageResponse, _internal_metadata_),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessageResponse, _is_default_instance_));
+  TextMessageResponse_TextState_descriptor_ = TextMessageResponse_descriptor_->enum_type(0);
   TextMessage_descriptor_ = file->message_type(2);
   static const int TextMessage_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TextMessage, msg_),
@@ -130,14 +132,16 @@ void protobuf_AddDesc_MumBot_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\014MumBot.proto\022\013MumBotProto\"2\n\022TextMessa"
     "geRequest\022\034\n\024regex_search_pattern\030\001 \001(\t\""
-    "&\n\023TextMessageResponse\022\017\n\007success\030\001 \001(\010\""
-    "<\n\013TextMessage\022\013\n\003msg\030\001 \001(\t\022\020\n\010fromName\030"
-    "\002 \001(\t\022\016\n\006toName\030\003 \003(\t2\252\001\n\tMumBotRPC\022C\n\003S"
-    "ay\022\030.MumBotProto.TextMessage\032 .MumBotPro"
-    "to.TextMessageResponse\"\000\022X\n\027SubscribeToT"
-    "extMessages\022\037.MumBotProto.TextMessageReq"
-    "uest\032\030.MumBotProto.TextMessage\"\0000\001b\006prot"
-    "o3", 362);
+    "}\n\023TextMessageResponse\0220\n\006result\030\001 \001(\0132 "
+    ".MumBotProto.TextMessageResponse\"4\n\tText"
+    "State\022\013\n\007SUCCESS\020\000\022\032\n\026FAILURE_INVALID_TO"
+    "NAME\020\001\"<\n\013TextMessage\022\013\n\003msg\030\001 \001(\t\022\020\n\010fr"
+    "omName\030\002 \001(\t\022\016\n\006toName\030\003 \003(\t2\252\001\n\tMumBotR"
+    "PC\022C\n\003Say\022\030.MumBotProto.TextMessage\032 .Mu"
+    "mBotProto.TextMessageResponse\"\000\022X\n\027Subsc"
+    "ribeToTextMessages\022\037.MumBotProto.TextMes"
+    "sageRequest\032\030.MumBotProto.TextMessage\"\0000"
+    "\001b\006proto3", 449);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "MumBot.proto", &protobuf_RegisterTypes);
   TextMessageRequest::default_instance_ = new TextMessageRequest();
@@ -442,8 +446,29 @@ void TextMessageRequest::clear_regex_search_pattern() {
 
 // ===================================================================
 
+const ::google::protobuf::EnumDescriptor* TextMessageResponse_TextState_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TextMessageResponse_TextState_descriptor_;
+}
+bool TextMessageResponse_TextState_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int TextMessageResponse::kSuccessFieldNumber;
+const TextMessageResponse_TextState TextMessageResponse::SUCCESS;
+const TextMessageResponse_TextState TextMessageResponse::FAILURE_INVALID_TONAME;
+const TextMessageResponse_TextState TextMessageResponse::TextState_MIN;
+const TextMessageResponse_TextState TextMessageResponse::TextState_MAX;
+const int TextMessageResponse::TextState_ARRAYSIZE;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int TextMessageResponse::kResultFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 TextMessageResponse::TextMessageResponse()
@@ -454,6 +479,7 @@ TextMessageResponse::TextMessageResponse()
 
 void TextMessageResponse::InitAsDefaultInstance() {
   _is_default_instance_ = true;
+  result_ = const_cast< ::MumBotProto::TextMessageResponse*>(&::MumBotProto::TextMessageResponse::default_instance());
 }
 
 TextMessageResponse::TextMessageResponse(const TextMessageResponse& from)
@@ -467,7 +493,7 @@ TextMessageResponse::TextMessageResponse(const TextMessageResponse& from)
 void TextMessageResponse::SharedCtor() {
     _is_default_instance_ = false;
   _cached_size_ = 0;
-  success_ = false;
+  result_ = NULL;
 }
 
 TextMessageResponse::~TextMessageResponse() {
@@ -477,6 +503,7 @@ TextMessageResponse::~TextMessageResponse() {
 
 void TextMessageResponse::SharedDtor() {
   if (this != default_instance_) {
+    delete result_;
   }
 }
 
@@ -507,7 +534,8 @@ TextMessageResponse* TextMessageResponse::New(::google::protobuf::Arena* arena) 
 
 void TextMessageResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:MumBotProto.TextMessageResponse)
-  success_ = false;
+  if (GetArenaNoVirtual() == NULL && result_ != NULL) delete result_;
+  result_ = NULL;
 }
 
 bool TextMessageResponse::MergePartialFromCodedStream(
@@ -520,13 +548,11 @@ bool TextMessageResponse::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bool success = 1;
+      // optional .MumBotProto.TextMessageResponse result = 1;
       case 1: {
-        if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &success_)));
-
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_result()));
         } else {
           goto handle_unusual;
         }
@@ -558,9 +584,10 @@ failure:
 void TextMessageResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:MumBotProto.TextMessageResponse)
-  // optional bool success = 1;
-  if (this->success() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->success(), output);
+  // optional .MumBotProto.TextMessageResponse result = 1;
+  if (this->has_result()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, *this->result_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:MumBotProto.TextMessageResponse)
@@ -569,9 +596,11 @@ void TextMessageResponse::SerializeWithCachedSizes(
 ::google::protobuf::uint8* TextMessageResponse::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:MumBotProto.TextMessageResponse)
-  // optional bool success = 1;
-  if (this->success() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->success(), target);
+  // optional .MumBotProto.TextMessageResponse result = 1;
+  if (this->has_result()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, *this->result_, false, target);
   }
 
   // @@protoc_insertion_point(serialize_to_array_end:MumBotProto.TextMessageResponse)
@@ -582,9 +611,11 @@ int TextMessageResponse::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:MumBotProto.TextMessageResponse)
   int total_size = 0;
 
-  // optional bool success = 1;
-  if (this->success() != 0) {
-    total_size += 1 + 1;
+  // optional .MumBotProto.TextMessageResponse result = 1;
+  if (this->has_result()) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        *this->result_);
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -615,8 +646,8 @@ void TextMessageResponse::MergeFrom(const TextMessageResponse& from) {
   if (GOOGLE_PREDICT_FALSE(&from == this)) {
     ::google::protobuf::internal::MergeFromFail(__FILE__, __LINE__);
   }
-  if (from.success() != 0) {
-    set_success(from.success());
+  if (from.has_result()) {
+    mutable_result()->::MumBotProto::TextMessageResponse::MergeFrom(from.result());
   }
 }
 
@@ -644,7 +675,7 @@ void TextMessageResponse::Swap(TextMessageResponse* other) {
   InternalSwap(other);
 }
 void TextMessageResponse::InternalSwap(TextMessageResponse* other) {
-  std::swap(success_, other->success_);
+  std::swap(result_, other->result_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -660,18 +691,42 @@ void TextMessageResponse::InternalSwap(TextMessageResponse* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // TextMessageResponse
 
-// optional bool success = 1;
-void TextMessageResponse::clear_success() {
-  success_ = false;
+// optional .MumBotProto.TextMessageResponse result = 1;
+bool TextMessageResponse::has_result() const {
+  return !_is_default_instance_ && result_ != NULL;
 }
- bool TextMessageResponse::success() const {
-  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageResponse.success)
-  return success_;
+void TextMessageResponse::clear_result() {
+  if (GetArenaNoVirtual() == NULL && result_ != NULL) delete result_;
+  result_ = NULL;
 }
- void TextMessageResponse::set_success(bool value) {
+const ::MumBotProto::TextMessageResponse& TextMessageResponse::result() const {
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageResponse.result)
+  return result_ != NULL ? *result_ : *default_instance_->result_;
+}
+::MumBotProto::TextMessageResponse* TextMessageResponse::mutable_result() {
   
-  success_ = value;
-  // @@protoc_insertion_point(field_set:MumBotProto.TextMessageResponse.success)
+  if (result_ == NULL) {
+    result_ = new ::MumBotProto::TextMessageResponse;
+  }
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessageResponse.result)
+  return result_;
+}
+::MumBotProto::TextMessageResponse* TextMessageResponse::release_result() {
+  // @@protoc_insertion_point(field_release:MumBotProto.TextMessageResponse.result)
+  
+  ::MumBotProto::TextMessageResponse* temp = result_;
+  result_ = NULL;
+  return temp;
+}
+void TextMessageResponse::set_allocated_result(::MumBotProto::TextMessageResponse* result) {
+  delete result_;
+  result_ = result;
+  if (result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:MumBotProto.TextMessageResponse.result)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

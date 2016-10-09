@@ -26,6 +26,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -40,6 +41,27 @@ class TextMessage;
 class TextMessageRequest;
 class TextMessageResponse;
 
+enum TextMessageResponse_TextState {
+  TextMessageResponse_TextState_SUCCESS = 0,
+  TextMessageResponse_TextState_FAILURE_INVALID_TONAME = 1,
+  TextMessageResponse_TextState_TextMessageResponse_TextState_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  TextMessageResponse_TextState_TextMessageResponse_TextState_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool TextMessageResponse_TextState_IsValid(int value);
+const TextMessageResponse_TextState TextMessageResponse_TextState_TextState_MIN = TextMessageResponse_TextState_SUCCESS;
+const TextMessageResponse_TextState TextMessageResponse_TextState_TextState_MAX = TextMessageResponse_TextState_FAILURE_INVALID_TONAME;
+const int TextMessageResponse_TextState_TextState_ARRAYSIZE = TextMessageResponse_TextState_TextState_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TextMessageResponse_TextState_descriptor();
+inline const ::std::string& TextMessageResponse_TextState_Name(TextMessageResponse_TextState value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TextMessageResponse_TextState_descriptor(), value);
+}
+inline bool TextMessageResponse_TextState_Parse(
+    const ::std::string& name, TextMessageResponse_TextState* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TextMessageResponse_TextState>(
+    TextMessageResponse_TextState_descriptor(), name, value);
+}
 // ===================================================================
 
 class TextMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MumBotProto.TextMessageRequest) */ {
@@ -187,20 +209,49 @@ class TextMessageResponse : public ::google::protobuf::Message /* @@protoc_inser
 
   // nested types ----------------------------------------------------
 
+  typedef TextMessageResponse_TextState TextState;
+  static const TextState SUCCESS =
+    TextMessageResponse_TextState_SUCCESS;
+  static const TextState FAILURE_INVALID_TONAME =
+    TextMessageResponse_TextState_FAILURE_INVALID_TONAME;
+  static inline bool TextState_IsValid(int value) {
+    return TextMessageResponse_TextState_IsValid(value);
+  }
+  static const TextState TextState_MIN =
+    TextMessageResponse_TextState_TextState_MIN;
+  static const TextState TextState_MAX =
+    TextMessageResponse_TextState_TextState_MAX;
+  static const int TextState_ARRAYSIZE =
+    TextMessageResponse_TextState_TextState_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  TextState_descriptor() {
+    return TextMessageResponse_TextState_descriptor();
+  }
+  static inline const ::std::string& TextState_Name(TextState value) {
+    return TextMessageResponse_TextState_Name(value);
+  }
+  static inline bool TextState_Parse(const ::std::string& name,
+      TextState* value) {
+    return TextMessageResponse_TextState_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
-  // optional bool success = 1;
-  void clear_success();
-  static const int kSuccessFieldNumber = 1;
-  bool success() const;
-  void set_success(bool value);
+  // optional .MumBotProto.TextMessageResponse result = 1;
+  bool has_result() const;
+  void clear_result();
+  static const int kResultFieldNumber = 1;
+  const ::MumBotProto::TextMessageResponse& result() const;
+  ::MumBotProto::TextMessageResponse* mutable_result();
+  ::MumBotProto::TextMessageResponse* release_result();
+  void set_allocated_result(::MumBotProto::TextMessageResponse* result);
 
   // @@protoc_insertion_point(class_scope:MumBotProto.TextMessageResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
-  bool success_;
+  ::MumBotProto::TextMessageResponse* result_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_MumBot_2eproto();
   friend void protobuf_AssignDesc_MumBot_2eproto();
@@ -381,18 +432,42 @@ inline void TextMessageRequest::set_allocated_regex_search_pattern(::std::string
 
 // TextMessageResponse
 
-// optional bool success = 1;
-inline void TextMessageResponse::clear_success() {
-  success_ = false;
+// optional .MumBotProto.TextMessageResponse result = 1;
+inline bool TextMessageResponse::has_result() const {
+  return !_is_default_instance_ && result_ != NULL;
 }
-inline bool TextMessageResponse::success() const {
-  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageResponse.success)
-  return success_;
+inline void TextMessageResponse::clear_result() {
+  if (GetArenaNoVirtual() == NULL && result_ != NULL) delete result_;
+  result_ = NULL;
 }
-inline void TextMessageResponse::set_success(bool value) {
+inline const ::MumBotProto::TextMessageResponse& TextMessageResponse::result() const {
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageResponse.result)
+  return result_ != NULL ? *result_ : *default_instance_->result_;
+}
+inline ::MumBotProto::TextMessageResponse* TextMessageResponse::mutable_result() {
   
-  success_ = value;
-  // @@protoc_insertion_point(field_set:MumBotProto.TextMessageResponse.success)
+  if (result_ == NULL) {
+    result_ = new ::MumBotProto::TextMessageResponse;
+  }
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessageResponse.result)
+  return result_;
+}
+inline ::MumBotProto::TextMessageResponse* TextMessageResponse::release_result() {
+  // @@protoc_insertion_point(field_release:MumBotProto.TextMessageResponse.result)
+  
+  ::MumBotProto::TextMessageResponse* temp = result_;
+  result_ = NULL;
+  return temp;
+}
+inline void TextMessageResponse::set_allocated_result(::MumBotProto::TextMessageResponse* result) {
+  delete result_;
+  result_ = result;
+  if (result) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_set_allocated:MumBotProto.TextMessageResponse.result)
 }
 
 // -------------------------------------------------------------------
@@ -551,6 +626,20 @@ TextMessage::mutable_toname() {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace MumBotProto
+
+#ifndef SWIG
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::MumBotProto::TextMessageResponse_TextState> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::MumBotProto::TextMessageResponse_TextState>() {
+  return ::MumBotProto::TextMessageResponse_TextState_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
+#endif  // SWIG
 
 // @@protoc_insertion_point(global_scope)
 

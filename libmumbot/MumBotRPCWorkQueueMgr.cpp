@@ -51,7 +51,6 @@ MumBotProto::TextMessage MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) 
     catch (std::exception &e) {
         throw std::out_of_range("MumBotRPCWorkQueueMgr::getNextTextMessage queueid does not exist " + std::to_string(queueid));
     }
-    MumBotProto::TextMessage blank;
-    return blank;
+
 
 }

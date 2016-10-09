@@ -17,24 +17,46 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='MumBot.proto',
-  package='libmumbot.protobuf',
+  package='MumBotProto',
   syntax='proto3',
-  serialized_pb=_b('\n\x0cMumBot.proto\x12\x12libmumbot.protobuf\"2\n\x12TextMessageRequest\x12\x1c\n\x14regex_search_pattern\x18\x01 \x01(\t\"&\n\x13TextMessageResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\"\x1a\n\x0bTextMessage\x12\x0b\n\x03msg\x18\x01 \x01(\t2\xc6\x01\n\tMumBotRPC\x12Q\n\x03Say\x12\x1f.libmumbot.protobuf.TextMessage\x1a\'.libmumbot.protobuf.TextMessageResponse\"\x00\x12\x66\n\x17SubscribeToTextMessages\x12&.libmumbot.protobuf.TextMessageRequest\x1a\x1f.libmumbot.protobuf.TextMessage\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x0cMumBot.proto\x12\x0bMumBotProto\"2\n\x12TextMessageRequest\x12\x1c\n\x14regex_search_pattern\x18\x01 \x01(\t\"}\n\x13TextMessageResponse\x12\x30\n\x06result\x18\x01 \x01(\x0b\x32 .MumBotProto.TextMessageResponse\"4\n\tTextState\x12\x0b\n\x07SUCCESS\x10\x00\x12\x1a\n\x16\x46\x41ILURE_INVALID_TONAME\x10\x01\"<\n\x0bTextMessage\x12\x0b\n\x03msg\x18\x01 \x01(\t\x12\x10\n\x08\x66romName\x18\x02 \x01(\t\x12\x0e\n\x06toName\x18\x03 \x03(\t2\xaa\x01\n\tMumBotRPC\x12\x43\n\x03Say\x12\x18.MumBotProto.TextMessage\x1a .MumBotProto.TextMessageResponse\"\x00\x12X\n\x17SubscribeToTextMessages\x12\x1f.MumBotProto.TextMessageRequest\x1a\x18.MumBotProto.TextMessage\"\x00\x30\x01\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
+_TEXTMESSAGERESPONSE_TEXTSTATE = _descriptor.EnumDescriptor(
+  name='TextState',
+  full_name='MumBotProto.TextMessageResponse.TextState',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='SUCCESS', index=0, number=0,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='FAILURE_INVALID_TONAME', index=1, number=1,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=154,
+  serialized_end=206,
+)
+_sym_db.RegisterEnumDescriptor(_TEXTMESSAGERESPONSE_TEXTSTATE)
+
 
 _TEXTMESSAGEREQUEST = _descriptor.Descriptor(
   name='TextMessageRequest',
-  full_name='libmumbot.protobuf.TextMessageRequest',
+  full_name='MumBotProto.TextMessageRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='regex_search_pattern', full_name='libmumbot.protobuf.TextMessageRequest.regex_search_pattern', index=0,
+      name='regex_search_pattern', full_name='MumBotProto.TextMessageRequest.regex_search_pattern', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -52,22 +74,22 @@ _TEXTMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=36,
-  serialized_end=86,
+  serialized_start=29,
+  serialized_end=79,
 )
 
 
 _TEXTMESSAGERESPONSE = _descriptor.Descriptor(
   name='TextMessageResponse',
-  full_name='libmumbot.protobuf.TextMessageResponse',
+  full_name='MumBotProto.TextMessageResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='success', full_name='libmumbot.protobuf.TextMessageResponse.success', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
+      name='result', full_name='MumBotProto.TextMessageResponse.result', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -76,6 +98,7 @@ _TEXTMESSAGERESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
+    _TEXTMESSAGERESPONSE_TEXTSTATE,
   ],
   options=None,
   is_extendable=False,
@@ -83,22 +106,36 @@ _TEXTMESSAGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=88,
-  serialized_end=126,
+  serialized_start=81,
+  serialized_end=206,
 )
 
 
 _TEXTMESSAGE = _descriptor.Descriptor(
   name='TextMessage',
-  full_name='libmumbot.protobuf.TextMessage',
+  full_name='MumBotProto.TextMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='msg', full_name='libmumbot.protobuf.TextMessage.msg', index=0,
+      name='msg', full_name='MumBotProto.TextMessage.msg', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='fromName', full_name='MumBotProto.TextMessage.fromName', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='toName', full_name='MumBotProto.TextMessage.toName', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -114,10 +151,12 @@ _TEXTMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=128,
-  serialized_end=154,
+  serialized_start=208,
+  serialized_end=268,
 )
 
+_TEXTMESSAGERESPONSE.fields_by_name['result'].message_type = _TEXTMESSAGERESPONSE
+_TEXTMESSAGERESPONSE_TEXTSTATE.containing_type = _TEXTMESSAGERESPONSE
 DESCRIPTOR.message_types_by_name['TextMessageRequest'] = _TEXTMESSAGEREQUEST
 DESCRIPTOR.message_types_by_name['TextMessageResponse'] = _TEXTMESSAGERESPONSE
 DESCRIPTOR.message_types_by_name['TextMessage'] = _TEXTMESSAGE
@@ -125,21 +164,21 @@ DESCRIPTOR.message_types_by_name['TextMessage'] = _TEXTMESSAGE
 TextMessageRequest = _reflection.GeneratedProtocolMessageType('TextMessageRequest', (_message.Message,), dict(
   DESCRIPTOR = _TEXTMESSAGEREQUEST,
   __module__ = 'MumBot_pb2'
-  # @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessageRequest)
+  # @@protoc_insertion_point(class_scope:MumBotProto.TextMessageRequest)
   ))
 _sym_db.RegisterMessage(TextMessageRequest)
 
 TextMessageResponse = _reflection.GeneratedProtocolMessageType('TextMessageResponse', (_message.Message,), dict(
   DESCRIPTOR = _TEXTMESSAGERESPONSE,
   __module__ = 'MumBot_pb2'
-  # @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessageResponse)
+  # @@protoc_insertion_point(class_scope:MumBotProto.TextMessageResponse)
   ))
 _sym_db.RegisterMessage(TextMessageResponse)
 
 TextMessage = _reflection.GeneratedProtocolMessageType('TextMessage', (_message.Message,), dict(
   DESCRIPTOR = _TEXTMESSAGE,
   __module__ = 'MumBot_pb2'
-  # @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessage)
+  # @@protoc_insertion_point(class_scope:MumBotProto.TextMessage)
   ))
 _sym_db.RegisterMessage(TextMessage)
 
@@ -160,12 +199,12 @@ class MumBotRPCStub(object):
       channel: A grpc.Channel.
     """
     self.Say = channel.unary_unary(
-        '/libmumbot.protobuf.MumBotRPC/Say',
+        '/MumBotProto.MumBotRPC/Say',
         request_serializer=TextMessage.SerializeToString,
         response_deserializer=TextMessageResponse.FromString,
         )
     self.SubscribeToTextMessages = channel.unary_stream(
-        '/libmumbot.protobuf.MumBotRPC/SubscribeToTextMessages',
+        '/MumBotProto.MumBotRPC/SubscribeToTextMessages',
         request_serializer=TextMessageRequest.SerializeToString,
         response_deserializer=TextMessage.FromString,
         )
@@ -198,7 +237,7 @@ def add_MumBotRPCServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'libmumbot.protobuf.MumBotRPC', rpc_method_handlers)
+      'MumBotProto.MumBotRPC', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -219,16 +258,16 @@ class BetaMumBotRPCStub(object):
 
 def beta_create_MumBotRPC_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
   request_deserializers = {
-    ('libmumbot.protobuf.MumBotRPC', 'Say'): TextMessage.FromString,
-    ('libmumbot.protobuf.MumBotRPC', 'SubscribeToTextMessages'): TextMessageRequest.FromString,
+    ('MumBotProto.MumBotRPC', 'Say'): TextMessage.FromString,
+    ('MumBotProto.MumBotRPC', 'SubscribeToTextMessages'): TextMessageRequest.FromString,
   }
   response_serializers = {
-    ('libmumbot.protobuf.MumBotRPC', 'Say'): TextMessageResponse.SerializeToString,
-    ('libmumbot.protobuf.MumBotRPC', 'SubscribeToTextMessages'): TextMessage.SerializeToString,
+    ('MumBotProto.MumBotRPC', 'Say'): TextMessageResponse.SerializeToString,
+    ('MumBotProto.MumBotRPC', 'SubscribeToTextMessages'): TextMessage.SerializeToString,
   }
   method_implementations = {
-    ('libmumbot.protobuf.MumBotRPC', 'Say'): face_utilities.unary_unary_inline(servicer.Say),
-    ('libmumbot.protobuf.MumBotRPC', 'SubscribeToTextMessages'): face_utilities.unary_stream_inline(servicer.SubscribeToTextMessages),
+    ('MumBotProto.MumBotRPC', 'Say'): face_utilities.unary_unary_inline(servicer.Say),
+    ('MumBotProto.MumBotRPC', 'SubscribeToTextMessages'): face_utilities.unary_stream_inline(servicer.SubscribeToTextMessages),
   }
   server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
   return beta_implementations.server(method_implementations, options=server_options)
@@ -236,17 +275,17 @@ def beta_create_MumBotRPC_server(servicer, pool=None, pool_size=None, default_ti
 
 def beta_create_MumBotRPC_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
   request_serializers = {
-    ('libmumbot.protobuf.MumBotRPC', 'Say'): TextMessage.SerializeToString,
-    ('libmumbot.protobuf.MumBotRPC', 'SubscribeToTextMessages'): TextMessageRequest.SerializeToString,
+    ('MumBotProto.MumBotRPC', 'Say'): TextMessage.SerializeToString,
+    ('MumBotProto.MumBotRPC', 'SubscribeToTextMessages'): TextMessageRequest.SerializeToString,
   }
   response_deserializers = {
-    ('libmumbot.protobuf.MumBotRPC', 'Say'): TextMessageResponse.FromString,
-    ('libmumbot.protobuf.MumBotRPC', 'SubscribeToTextMessages'): TextMessage.FromString,
+    ('MumBotProto.MumBotRPC', 'Say'): TextMessageResponse.FromString,
+    ('MumBotProto.MumBotRPC', 'SubscribeToTextMessages'): TextMessage.FromString,
   }
   cardinalities = {
     'Say': cardinality.Cardinality.UNARY_UNARY,
     'SubscribeToTextMessages': cardinality.Cardinality.UNARY_STREAM,
   }
   stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'libmumbot.protobuf.MumBotRPC', cardinalities, options=stub_options)
+  return beta_implementations.dynamic_stub(channel, 'MumBotProto.MumBotRPC', cardinalities, options=stub_options)
 # @@protoc_insertion_point(module_scope)

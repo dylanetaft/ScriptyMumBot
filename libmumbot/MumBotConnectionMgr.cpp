@@ -82,8 +82,13 @@ namespace libmumbot {
 
 	    if (c_headerpos_ == 6) { //TODO deal with endian
 	    uint16_t pkttype = c_headerbuffer_[0] << 8 | c_headerbuffer_[1];
-	    uint32_t pktlen = c_headerbuffer_[2] << 24 | c_headerbuffer_[3] << 16 | c_headerbuffer_[4] << 8 | c_headerbuffer_[5];
+	    uint32_t pktlen = c_headerbuffer_[2] << 24 | c_headerbuffer_[3] << 16 | c_headerbuffer_[4] << 8 | c_headerbuffer_[5]; //FIXME if server sends invalid packet length, this can break
 	    std::cout << "Pkt type:" << pkttype << " Pkt len:" << pktlen << "\n";
+        if (pktlen == 0) {
+            std::cout << "FIXME: Server sent 0 size packet?\n";
+            c_headerpos_ = 0;
+            return false; //why would the server send this? FIXME
+        }
 	    if (c_datapos_ == 0) c_data_ = (uint8_t *) malloc(pktlen); //initialize new ram
 	    int bytesr = gnutls_record_recv(gnutls_session_,c_data_ + c_datapos_, pktlen - c_datapos_);
 	    if (bytesr < 0) {
@@ -138,7 +143,12 @@ namespace libmumbot {
      
                   MumBotProto::TextMessage mbtxt;
                   mbtxt.set_msg(txt.message());
-                  mbtxt.set_fromname(mumState_->getUserState(txt.actor()).name());
+                  try {
+                      mbtxt.set_fromname(mumState_->getUserState(txt.actor()).name());
+                  }
+                  catch (std::exception &e) {
+                      //just in case the user logged out and no longer have the id->name map
+                  }
 				  RPCWorkQueueMgr_.pushNextTextMessage(mbtxt);
                   
 				  std::cout << "Recv message 2" << "\n";
@@ -236,10 +246,24 @@ namespace libmumbot {
 	}
 	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const MumBotProto::TextMessage* request, MumBotProto::TextMessageResponse* response) {
 		std::cout << "Say was called\n";
-		MumbleProto::TextMessage mtxt;
+        MumbleProto::TextMessage mtxt;
+        
+        int tncount = request->toname_size();
+        for (int i = 0; i < tncount;i++) {
+            try {
+                uint32_t toUserSession = mumState_->userNameToSession(request->toname(i));
+                mtxt.add_session(toUserSession);
+            }
+            catch (std::exception &e) {
+                //the user logged off, just return
+                return grpc::Status::OK;
+            }
+        }
+        
+		
 		mtxt.set_message(request->msg());
 		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
-		mtxt.add_channel_id(state.channel_id()); //send to my channel
+		if (tncount == 0) mtxt.add_channel_id(state.channel_id()); //send to my channel
 		sendData(PKT_TYPE_TEXTMESSAGE, mtxt.SerializeAsString());
 		return grpc::Status::OK;
 	}
