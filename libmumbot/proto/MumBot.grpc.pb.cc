@@ -13,12 +13,11 @@
 #include <grpc++/impl/codegen/rpc_service_method.h>
 #include <grpc++/impl/codegen/service_type.h>
 #include <grpc++/impl/codegen/sync_stream.h>
-namespace libmumbot {
-namespace protobuf {
+namespace MumBotProto {
 
 static const char* MumBotRPC_method_names[] = {
-  "/libmumbot.protobuf.MumBotRPC/Say",
-  "/libmumbot.protobuf.MumBotRPC/SubscribeToTextMessages",
+  "/MumBotProto.MumBotRPC/Say",
+  "/MumBotProto.MumBotRPC/SubscribeToTextMessages",
 };
 
 std::unique_ptr< MumBotRPC::Stub> MumBotRPC::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -31,20 +30,20 @@ MumBotRPC::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
   , rpcmethod_SubscribeToTextMessages_(MumBotRPC_method_names[1], ::grpc::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::Status MumBotRPC::Stub::Say(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::libmumbot::protobuf::TextMessageResponse* response) {
+::grpc::Status MumBotRPC::Stub::Say(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::MumBotProto::TextMessageResponse* response) {
   return ::grpc::BlockingUnaryCall(channel_.get(), rpcmethod_Say_, context, request, response);
 }
 
-::grpc::ClientAsyncResponseReader< ::libmumbot::protobuf::TextMessageResponse>* MumBotRPC::Stub::AsyncSayRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::grpc::CompletionQueue* cq) {
-  return new ::grpc::ClientAsyncResponseReader< ::libmumbot::protobuf::TextMessageResponse>(channel_.get(), cq, rpcmethod_Say_, context, request);
+::grpc::ClientAsyncResponseReader< ::MumBotProto::TextMessageResponse>* MumBotRPC::Stub::AsyncSayRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::grpc::CompletionQueue* cq) {
+  return new ::grpc::ClientAsyncResponseReader< ::MumBotProto::TextMessageResponse>(channel_.get(), cq, rpcmethod_Say_, context, request);
 }
 
-::grpc::ClientReader< ::libmumbot::protobuf::TextMessage>* MumBotRPC::Stub::SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request) {
-  return new ::grpc::ClientReader< ::libmumbot::protobuf::TextMessage>(channel_.get(), rpcmethod_SubscribeToTextMessages_, context, request);
+::grpc::ClientReader< ::MumBotProto::TextMessage>* MumBotRPC::Stub::SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request) {
+  return new ::grpc::ClientReader< ::MumBotProto::TextMessage>(channel_.get(), rpcmethod_SubscribeToTextMessages_, context, request);
 }
 
-::grpc::ClientAsyncReader< ::libmumbot::protobuf::TextMessage>* MumBotRPC::Stub::AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return new ::grpc::ClientAsyncReader< ::libmumbot::protobuf::TextMessage>(channel_.get(), cq, rpcmethod_SubscribeToTextMessages_, context, request, tag);
+::grpc::ClientAsyncReader< ::MumBotProto::TextMessage>* MumBotRPC::Stub::AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return new ::grpc::ClientAsyncReader< ::MumBotProto::TextMessage>(channel_.get(), cq, rpcmethod_SubscribeToTextMessages_, context, request, tag);
 }
 
 MumBotRPC::Service::Service() {
@@ -52,26 +51,26 @@ MumBotRPC::Service::Service() {
   AddMethod(new ::grpc::RpcServiceMethod(
       MumBotRPC_method_names[0],
       ::grpc::RpcMethod::NORMAL_RPC,
-      new ::grpc::RpcMethodHandler< MumBotRPC::Service, ::libmumbot::protobuf::TextMessage, ::libmumbot::protobuf::TextMessageResponse>(
+      new ::grpc::RpcMethodHandler< MumBotRPC::Service, ::MumBotProto::TextMessage, ::MumBotProto::TextMessageResponse>(
           std::mem_fn(&MumBotRPC::Service::Say), this)));
   AddMethod(new ::grpc::RpcServiceMethod(
       MumBotRPC_method_names[1],
       ::grpc::RpcMethod::SERVER_STREAMING,
-      new ::grpc::ServerStreamingHandler< MumBotRPC::Service, ::libmumbot::protobuf::TextMessageRequest, ::libmumbot::protobuf::TextMessage>(
+      new ::grpc::ServerStreamingHandler< MumBotRPC::Service, ::MumBotProto::TextMessageRequest, ::MumBotProto::TextMessage>(
           std::mem_fn(&MumBotRPC::Service::SubscribeToTextMessages), this)));
 }
 
 MumBotRPC::Service::~Service() {
 }
 
-::grpc::Status MumBotRPC::Service::Say(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessage* request, ::libmumbot::protobuf::TextMessageResponse* response) {
+::grpc::Status MumBotRPC::Service::Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response) {
   (void) context;
   (void) request;
   (void) response;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status MumBotRPC::Service::SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessageRequest* request, ::grpc::ServerWriter< ::libmumbot::protobuf::TextMessage>* writer) {
+::grpc::Status MumBotRPC::Service::SubscribeToTextMessages(::grpc::ServerContext* context, const ::MumBotProto::TextMessageRequest* request, ::grpc::ServerWriter< ::MumBotProto::TextMessage>* writer) {
   (void) context;
   (void) request;
   (void) writer;
@@ -79,6 +78,5 @@ MumBotRPC::Service::~Service() {
 }
 
 
-}  // namespace libmumbot
-}  // namespace protobuf
+}  // namespace MumBotProto
 

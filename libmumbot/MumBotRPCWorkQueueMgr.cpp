@@ -18,7 +18,7 @@ void MumBotRPCWorkQueueMgr::removeTextMessageQueue(int index) {
 	textMessageQueues_.erase(index);
 }
 
-void MumBotRPCWorkQueueMgr::pushNextTextMessage(std::string msg) {
+void MumBotRPCWorkQueueMgr::pushNextTextMessage(MumBotProto::TextMessage msg) {
 	std::cout << "Calling pushNextTextMessage\n";
 	std::lock_guard<std::mutex> lock(txtMessageQueuesMutex_); //easiest solution for now
 	for (const auto &i : textMessageQueues_) { //push to all queues
@@ -29,7 +29,7 @@ void MumBotRPCWorkQueueMgr::pushNextTextMessage(std::string msg) {
 	}
 }
 
-std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
+MumBotProto::TextMessage MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
 
 	std::cout << "Calling getNextTextMessage\n";
 	std::unique_lock<std::mutex> tlock(txtMessageQueuesMutex_);
@@ -44,13 +44,14 @@ std::string MumBotRPCWorkQueueMgr::getNextTextMessage(int queueid) {
         }
         std::cout << "lock 3\n";
         //qlock.lock();
-        std::string msg = ptr->queue.front();
+        MumBotProto::TextMessage msg = ptr->queue.front();
         ptr->queue.pop();
         return msg;
     }
     catch (std::exception &e) {
         throw std::out_of_range("MumBotRPCWorkQueueMgr::getNextTextMessage queueid does not exist " + std::to_string(queueid));
     }
-    return "";
+    MumBotProto::TextMessage blank;
+    return blank;
 
 }

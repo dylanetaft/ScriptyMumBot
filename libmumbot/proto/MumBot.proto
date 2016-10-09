@@ -1,5 +1,5 @@
 syntax = "proto3";
-package libmumbot.protobuf;
+package MumBotProto;
 
 service MumBotRPC {
 	rpc Say(TextMessage) returns (TextMessageResponse){};
@@ -16,4 +16,6 @@ message TextMessageResponse {
 
 message TextMessage {
 	string msg = 1;
+    string fromName = 2;
+    repeated string toName = 3;
 }

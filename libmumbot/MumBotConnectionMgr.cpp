@@ -134,7 +134,13 @@ namespace libmumbot {
 				  std::cout << "Recv message" << "\n";
 				  MumbleProto::TextMessage txt;
 				  txt.ParseFromString(packet);
-				  RPCWorkQueueMgr_.pushNextTextMessage(txt.message());
+                  
+     
+                  MumBotProto::TextMessage mbtxt;
+                  mbtxt.set_msg(txt.message());
+                  mbtxt.set_fromname(mumState_->getUserState(txt.actor()).name());
+				  RPCWorkQueueMgr_.pushNextTextMessage(mbtxt);
+                  
 				  std::cout << "Recv message 2" << "\n";
 				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
 				  break;
@@ -213,24 +219,22 @@ namespace libmumbot {
 
 	}
 
-	grpc::Status MumBotConnectionMgr::SubscribeToTextMessages(::grpc::ServerContext* context, const protobuf::TextMessageRequest* request, ::grpc::ServerWriter<protobuf::TextMessage>* writer) {
+	grpc::Status MumBotConnectionMgr::SubscribeToTextMessages(::grpc::ServerContext* context, const MumBotProto::TextMessageRequest* request, ::grpc::ServerWriter<MumBotProto::TextMessage>* writer) {
 		std::cout << "Calling me\n";
 		uint32_t myindex = RPCWorkQueueMgr_.createTextMessageQueue();
 
 		for (;;) {
-			std::string msg = RPCWorkQueueMgr_.getNextTextMessage(myindex); //will wait
+			MumBotProto::TextMessage tmsg = RPCWorkQueueMgr_.getNextTextMessage(myindex); //will wait
 			std::cout << "ever make it here\n";
-			std::cout << msg << "\n";
+			std::cout << tmsg.msg() << "\n";
 			if (context->IsCancelled()) break;
-			protobuf::TextMessage tmsg;
-			tmsg.set_msg(msg);
 			writer->Write(tmsg);
 		}
 		std::cout << "NEVER make it here\n";
 		RPCWorkQueueMgr_.removeTextMessageQueue(myindex);
 		return grpc::Status::OK;
 	}
-	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const protobuf::TextMessage* request, protobuf::TextMessageResponse* response) {
+	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const MumBotProto::TextMessage* request, MumBotProto::TextMessageResponse* response) {
 		std::cout << "Say was called\n";
 		MumbleProto::TextMessage mtxt;
 		mtxt.set_message(request->msg());

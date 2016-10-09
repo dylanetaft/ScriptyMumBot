@@ -10,7 +10,7 @@ mpd_music_path = '../mpd/music/';
 playlist_path = './playlists/'
 mpc_command = "mpc -p 7701 -h localhost";
 
-channel = grpc.insecure_channel('localhost:50080')
+channel = grpc.insecure_channel('127.0.0.1:50080')
 stub = proto.MumBot_pb2.MumBotRPCStub(channel)
 
 lastFileList_ = []

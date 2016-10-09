@@ -29,8 +29,7 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
-namespace libmumbot {
-namespace protobuf {
+namespace MumBotProto {
 
 // Internal implementation detail -- do not call these.
 void protobuf_AddDesc_MumBot_2eproto();
@@ -43,7 +42,7 @@ class TextMessageResponse;
 
 // ===================================================================
 
-class TextMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:libmumbot.protobuf.TextMessageRequest) */ {
+class TextMessageRequest : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MumBotProto.TextMessageRequest) */ {
  public:
   TextMessageRequest();
   virtual ~TextMessageRequest();
@@ -114,7 +113,7 @@ class TextMessageRequest : public ::google::protobuf::Message /* @@protoc_insert
   ::std::string* release_regex_search_pattern();
   void set_allocated_regex_search_pattern(::std::string* regex_search_pattern);
 
-  // @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessageRequest)
+  // @@protoc_insertion_point(class_scope:MumBotProto.TextMessageRequest)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -130,7 +129,7 @@ class TextMessageRequest : public ::google::protobuf::Message /* @@protoc_insert
 };
 // -------------------------------------------------------------------
 
-class TextMessageResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:libmumbot.protobuf.TextMessageResponse) */ {
+class TextMessageResponse : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MumBotProto.TextMessageResponse) */ {
  public:
   TextMessageResponse();
   virtual ~TextMessageResponse();
@@ -196,7 +195,7 @@ class TextMessageResponse : public ::google::protobuf::Message /* @@protoc_inser
   bool success() const;
   void set_success(bool value);
 
-  // @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessageResponse)
+  // @@protoc_insertion_point(class_scope:MumBotProto.TextMessageResponse)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -212,7 +211,7 @@ class TextMessageResponse : public ::google::protobuf::Message /* @@protoc_inser
 };
 // -------------------------------------------------------------------
 
-class TextMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:libmumbot.protobuf.TextMessage) */ {
+class TextMessage : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:MumBotProto.TextMessage) */ {
  public:
   TextMessage();
   virtual ~TextMessage();
@@ -283,12 +282,41 @@ class TextMessage : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_msg();
   void set_allocated_msg(::std::string* msg);
 
-  // @@protoc_insertion_point(class_scope:libmumbot.protobuf.TextMessage)
+  // optional string fromName = 2;
+  void clear_fromname();
+  static const int kFromNameFieldNumber = 2;
+  const ::std::string& fromname() const;
+  void set_fromname(const ::std::string& value);
+  void set_fromname(const char* value);
+  void set_fromname(const char* value, size_t size);
+  ::std::string* mutable_fromname();
+  ::std::string* release_fromname();
+  void set_allocated_fromname(::std::string* fromname);
+
+  // repeated string toName = 3;
+  int toname_size() const;
+  void clear_toname();
+  static const int kToNameFieldNumber = 3;
+  const ::std::string& toname(int index) const;
+  ::std::string* mutable_toname(int index);
+  void set_toname(int index, const ::std::string& value);
+  void set_toname(int index, const char* value);
+  void set_toname(int index, const char* value, size_t size);
+  ::std::string* add_toname();
+  void add_toname(const ::std::string& value);
+  void add_toname(const char* value);
+  void add_toname(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& toname() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_toname();
+
+  // @@protoc_insertion_point(class_scope:MumBotProto.TextMessage)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr msg_;
+  ::google::protobuf::internal::ArenaStringPtr fromname_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> toname_;
   mutable int _cached_size_;
   friend void  protobuf_AddDesc_MumBot_2eproto();
   friend void protobuf_AssignDesc_MumBot_2eproto();
@@ -310,32 +338,32 @@ inline void TextMessageRequest::clear_regex_search_pattern() {
   regex_search_pattern_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline const ::std::string& TextMessageRequest::regex_search_pattern() const {
-  // @@protoc_insertion_point(field_get:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageRequest.regex_search_pattern)
   return regex_search_pattern_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void TextMessageRequest::set_regex_search_pattern(const ::std::string& value) {
   
   regex_search_pattern_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_set:MumBotProto.TextMessageRequest.regex_search_pattern)
 }
 inline void TextMessageRequest::set_regex_search_pattern(const char* value) {
   
   regex_search_pattern_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_set_char:MumBotProto.TextMessageRequest.regex_search_pattern)
 }
 inline void TextMessageRequest::set_regex_search_pattern(const char* value, size_t size) {
   
   regex_search_pattern_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_set_pointer:MumBotProto.TextMessageRequest.regex_search_pattern)
 }
 inline ::std::string* TextMessageRequest::mutable_regex_search_pattern() {
   
-  // @@protoc_insertion_point(field_mutable:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessageRequest.regex_search_pattern)
   return regex_search_pattern_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* TextMessageRequest::release_regex_search_pattern() {
-  // @@protoc_insertion_point(field_release:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_release:MumBotProto.TextMessageRequest.regex_search_pattern)
   
   return regex_search_pattern_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -346,7 +374,7 @@ inline void TextMessageRequest::set_allocated_regex_search_pattern(::std::string
     
   }
   regex_search_pattern_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), regex_search_pattern);
-  // @@protoc_insertion_point(field_set_allocated:libmumbot.protobuf.TextMessageRequest.regex_search_pattern)
+  // @@protoc_insertion_point(field_set_allocated:MumBotProto.TextMessageRequest.regex_search_pattern)
 }
 
 // -------------------------------------------------------------------
@@ -358,13 +386,13 @@ inline void TextMessageResponse::clear_success() {
   success_ = false;
 }
 inline bool TextMessageResponse::success() const {
-  // @@protoc_insertion_point(field_get:libmumbot.protobuf.TextMessageResponse.success)
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessageResponse.success)
   return success_;
 }
 inline void TextMessageResponse::set_success(bool value) {
   
   success_ = value;
-  // @@protoc_insertion_point(field_set:libmumbot.protobuf.TextMessageResponse.success)
+  // @@protoc_insertion_point(field_set:MumBotProto.TextMessageResponse.success)
 }
 
 // -------------------------------------------------------------------
@@ -376,32 +404,32 @@ inline void TextMessage::clear_msg() {
   msg_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline const ::std::string& TextMessage::msg() const {
-  // @@protoc_insertion_point(field_get:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessage.msg)
   return msg_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void TextMessage::set_msg(const ::std::string& value) {
   
   msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_set:MumBotProto.TextMessage.msg)
 }
 inline void TextMessage::set_msg(const char* value) {
   
   msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_set_char:MumBotProto.TextMessage.msg)
 }
 inline void TextMessage::set_msg(const char* value, size_t size) {
   
   msg_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_set_pointer:MumBotProto.TextMessage.msg)
 }
 inline ::std::string* TextMessage::mutable_msg() {
   
-  // @@protoc_insertion_point(field_mutable:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessage.msg)
   return msg_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* TextMessage::release_msg() {
-  // @@protoc_insertion_point(field_release:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_release:MumBotProto.TextMessage.msg)
   
   return msg_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -412,7 +440,106 @@ inline void TextMessage::set_allocated_msg(::std::string* msg) {
     
   }
   msg_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), msg);
-  // @@protoc_insertion_point(field_set_allocated:libmumbot.protobuf.TextMessage.msg)
+  // @@protoc_insertion_point(field_set_allocated:MumBotProto.TextMessage.msg)
+}
+
+// optional string fromName = 2;
+inline void TextMessage::clear_fromname() {
+  fromname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& TextMessage::fromname() const {
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessage.fromName)
+  return fromname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TextMessage::set_fromname(const ::std::string& value) {
+  
+  fromname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:MumBotProto.TextMessage.fromName)
+}
+inline void TextMessage::set_fromname(const char* value) {
+  
+  fromname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:MumBotProto.TextMessage.fromName)
+}
+inline void TextMessage::set_fromname(const char* value, size_t size) {
+  
+  fromname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:MumBotProto.TextMessage.fromName)
+}
+inline ::std::string* TextMessage::mutable_fromname() {
+  
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessage.fromName)
+  return fromname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* TextMessage::release_fromname() {
+  // @@protoc_insertion_point(field_release:MumBotProto.TextMessage.fromName)
+  
+  return fromname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void TextMessage::set_allocated_fromname(::std::string* fromname) {
+  if (fromname != NULL) {
+    
+  } else {
+    
+  }
+  fromname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), fromname);
+  // @@protoc_insertion_point(field_set_allocated:MumBotProto.TextMessage.fromName)
+}
+
+// repeated string toName = 3;
+inline int TextMessage::toname_size() const {
+  return toname_.size();
+}
+inline void TextMessage::clear_toname() {
+  toname_.Clear();
+}
+inline const ::std::string& TextMessage::toname(int index) const {
+  // @@protoc_insertion_point(field_get:MumBotProto.TextMessage.toName)
+  return toname_.Get(index);
+}
+inline ::std::string* TextMessage::mutable_toname(int index) {
+  // @@protoc_insertion_point(field_mutable:MumBotProto.TextMessage.toName)
+  return toname_.Mutable(index);
+}
+inline void TextMessage::set_toname(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:MumBotProto.TextMessage.toName)
+  toname_.Mutable(index)->assign(value);
+}
+inline void TextMessage::set_toname(int index, const char* value) {
+  toname_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:MumBotProto.TextMessage.toName)
+}
+inline void TextMessage::set_toname(int index, const char* value, size_t size) {
+  toname_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:MumBotProto.TextMessage.toName)
+}
+inline ::std::string* TextMessage::add_toname() {
+  // @@protoc_insertion_point(field_add_mutable:MumBotProto.TextMessage.toName)
+  return toname_.Add();
+}
+inline void TextMessage::add_toname(const ::std::string& value) {
+  toname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:MumBotProto.TextMessage.toName)
+}
+inline void TextMessage::add_toname(const char* value) {
+  toname_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:MumBotProto.TextMessage.toName)
+}
+inline void TextMessage::add_toname(const char* value, size_t size) {
+  toname_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:MumBotProto.TextMessage.toName)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+TextMessage::toname() const {
+  // @@protoc_insertion_point(field_list:MumBotProto.TextMessage.toName)
+  return toname_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+TextMessage::mutable_toname() {
+  // @@protoc_insertion_point(field_mutable_list:MumBotProto.TextMessage.toName)
+  return &toname_;
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -423,8 +550,7 @@ inline void TextMessage::set_allocated_msg(::std::string* msg) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace protobuf
-}  // namespace libmumbot
+}  // namespace MumBotProto
 
 // @@protoc_insertion_point(global_scope)
 

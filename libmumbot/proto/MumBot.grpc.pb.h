@@ -24,48 +24,47 @@ class ServerCompletionQueue;
 class ServerContext;
 }  // namespace grpc
 
-namespace libmumbot {
-namespace protobuf {
+namespace MumBotProto {
 
 class MumBotRPC GRPC_FINAL {
  public:
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status Say(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::libmumbot::protobuf::TextMessageResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::libmumbot::protobuf::TextMessageResponse>> AsyncSay(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::libmumbot::protobuf::TextMessageResponse>>(AsyncSayRaw(context, request, cq));
+    virtual ::grpc::Status Say(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::MumBotProto::TextMessageResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::MumBotProto::TextMessageResponse>> AsyncSay(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::MumBotProto::TextMessageResponse>>(AsyncSayRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::libmumbot::protobuf::TextMessage>> SubscribeToTextMessages(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::libmumbot::protobuf::TextMessage>>(SubscribeToTextMessagesRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::MumBotProto::TextMessage>> SubscribeToTextMessages(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::MumBotProto::TextMessage>>(SubscribeToTextMessagesRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::libmumbot::protobuf::TextMessage>> AsyncSubscribeToTextMessages(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::libmumbot::protobuf::TextMessage>>(AsyncSubscribeToTextMessagesRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::MumBotProto::TextMessage>> AsyncSubscribeToTextMessages(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::MumBotProto::TextMessage>>(AsyncSubscribeToTextMessagesRaw(context, request, cq, tag));
     }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::libmumbot::protobuf::TextMessageResponse>* AsyncSayRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientReaderInterface< ::libmumbot::protobuf::TextMessage>* SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::libmumbot::protobuf::TextMessage>* AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::MumBotProto::TextMessageResponse>* AsyncSayRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::MumBotProto::TextMessage>* SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::MumBotProto::TextMessage>* AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
   };
   class Stub GRPC_FINAL : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status Say(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::libmumbot::protobuf::TextMessageResponse* response) GRPC_OVERRIDE;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::libmumbot::protobuf::TextMessageResponse>> AsyncSay(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::libmumbot::protobuf::TextMessageResponse>>(AsyncSayRaw(context, request, cq));
+    ::grpc::Status Say(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::MumBotProto::TextMessageResponse* response) GRPC_OVERRIDE;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::MumBotProto::TextMessageResponse>> AsyncSay(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::MumBotProto::TextMessageResponse>>(AsyncSayRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientReader< ::libmumbot::protobuf::TextMessage>> SubscribeToTextMessages(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::libmumbot::protobuf::TextMessage>>(SubscribeToTextMessagesRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReader< ::MumBotProto::TextMessage>> SubscribeToTextMessages(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::MumBotProto::TextMessage>>(SubscribeToTextMessagesRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::libmumbot::protobuf::TextMessage>> AsyncSubscribeToTextMessages(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::libmumbot::protobuf::TextMessage>>(AsyncSubscribeToTextMessagesRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::MumBotProto::TextMessage>> AsyncSubscribeToTextMessages(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::MumBotProto::TextMessage>>(AsyncSubscribeToTextMessagesRaw(context, request, cq, tag));
     }
 
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
-    ::grpc::ClientAsyncResponseReader< ::libmumbot::protobuf::TextMessageResponse>* AsyncSayRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessage& request, ::grpc::CompletionQueue* cq) GRPC_OVERRIDE;
-    ::grpc::ClientReader< ::libmumbot::protobuf::TextMessage>* SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request) GRPC_OVERRIDE;
-    ::grpc::ClientAsyncReader< ::libmumbot::protobuf::TextMessage>* AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::libmumbot::protobuf::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) GRPC_OVERRIDE;
+    ::grpc::ClientAsyncResponseReader< ::MumBotProto::TextMessageResponse>* AsyncSayRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessage& request, ::grpc::CompletionQueue* cq) GRPC_OVERRIDE;
+    ::grpc::ClientReader< ::MumBotProto::TextMessage>* SubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request) GRPC_OVERRIDE;
+    ::grpc::ClientAsyncReader< ::MumBotProto::TextMessage>* AsyncSubscribeToTextMessagesRaw(::grpc::ClientContext* context, const ::MumBotProto::TextMessageRequest& request, ::grpc::CompletionQueue* cq, void* tag) GRPC_OVERRIDE;
     const ::grpc::RpcMethod rpcmethod_Say_;
     const ::grpc::RpcMethod rpcmethod_SubscribeToTextMessages_;
   };
@@ -75,8 +74,8 @@ class MumBotRPC GRPC_FINAL {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessage* request, ::libmumbot::protobuf::TextMessageResponse* response);
-    virtual ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessageRequest* request, ::grpc::ServerWriter< ::libmumbot::protobuf::TextMessage>* writer);
+    virtual ::grpc::Status Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response);
+    virtual ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::MumBotProto::TextMessageRequest* request, ::grpc::ServerWriter< ::MumBotProto::TextMessage>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_Say : public BaseClass {
@@ -90,11 +89,11 @@ class MumBotRPC GRPC_FINAL {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessage* request, ::libmumbot::protobuf::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
+    ::grpc::Status Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSay(::grpc::ServerContext* context, ::libmumbot::protobuf::TextMessage* request, ::grpc::ServerAsyncResponseWriter< ::libmumbot::protobuf::TextMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSay(::grpc::ServerContext* context, ::MumBotProto::TextMessage* request, ::grpc::ServerAsyncResponseWriter< ::MumBotProto::TextMessageResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -110,11 +109,11 @@ class MumBotRPC GRPC_FINAL {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessageRequest* request, ::grpc::ServerWriter< ::libmumbot::protobuf::TextMessage>* writer) GRPC_FINAL GRPC_OVERRIDE {
+    ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::MumBotProto::TextMessageRequest* request, ::grpc::ServerWriter< ::MumBotProto::TextMessage>* writer) GRPC_FINAL GRPC_OVERRIDE {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeToTextMessages(::grpc::ServerContext* context, ::libmumbot::protobuf::TextMessageRequest* request, ::grpc::ServerAsyncWriter< ::libmumbot::protobuf::TextMessage>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSubscribeToTextMessages(::grpc::ServerContext* context, ::MumBotProto::TextMessageRequest* request, ::grpc::ServerAsyncWriter< ::MumBotProto::TextMessage>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -131,7 +130,7 @@ class MumBotRPC GRPC_FINAL {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessage* request, ::libmumbot::protobuf::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
+    ::grpc::Status Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -148,7 +147,7 @@ class MumBotRPC GRPC_FINAL {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessageRequest* request, ::grpc::ServerWriter< ::libmumbot::protobuf::TextMessage>* writer) GRPC_FINAL GRPC_OVERRIDE {
+    ::grpc::Status SubscribeToTextMessages(::grpc::ServerContext* context, const ::MumBotProto::TextMessageRequest* request, ::grpc::ServerWriter< ::MumBotProto::TextMessage>* writer) GRPC_FINAL GRPC_OVERRIDE {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -160,24 +159,23 @@ class MumBotRPC GRPC_FINAL {
    public:
     WithStreamedUnaryMethod_Say() {
       ::grpc::Service::MarkMethodStreamedUnary(0,
-        new ::grpc::StreamedUnaryHandler< ::libmumbot::protobuf::TextMessage, ::libmumbot::protobuf::TextMessageResponse>(std::bind(&WithStreamedUnaryMethod_Say<BaseClass>::StreamedSay, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::StreamedUnaryHandler< ::MumBotProto::TextMessage, ::MumBotProto::TextMessageResponse>(std::bind(&WithStreamedUnaryMethod_Say<BaseClass>::StreamedSay, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Say() GRPC_OVERRIDE {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Say(::grpc::ServerContext* context, const ::libmumbot::protobuf::TextMessage* request, ::libmumbot::protobuf::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
+    ::grpc::Status Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSay(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::libmumbot::protobuf::TextMessage,::libmumbot::protobuf::TextMessageResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedSay(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::MumBotProto::TextMessage,::MumBotProto::TextMessageResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_Say<Service > StreamedUnaryService;
 };
 
-}  // namespace protobuf
-}  // namespace libmumbot
+}  // namespace MumBotProto
 
 
 #endif  // GRPC_MumBot_2eproto__INCLUDED
