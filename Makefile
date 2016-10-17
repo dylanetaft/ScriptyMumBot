@@ -12,12 +12,12 @@ LIBMUMBOT_SRCS = ./libmumbot/MumBotState.cpp ./libmumbot/MumBotConnectionMgr.cpp
 LIBMUMBOT_OBJS = MumBotState.o MumBotConnectionMgr.o MumBotRPCWorkQueueMgr.o OpusOggOutputWriter.o AudioInputOpusWriter.o libmumbot.o MumBotConfig.o Mumble.pb.o MumBot.grpc.pb.o MumBot.pb.o
 
 libmumbot.a: $(LIBMUMBOT_SRCS)
-        $(CXX) $(CXXFLAGS) -c $(LIBMUMBOT_SRCS)
-        ar rc libmumbot.a $(LIBMUMBOT_OBJS)
+	$(CXX) $(CXXFLAGS) -c $(LIBMUMBOT_SRCS)
+	ar rc libmumbot.a $(LIBMUMBOT_OBJS)
 
 
 scriptybot: main.cpp
-        $(CXX) $(CXXFLAGS) -c main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
 bot: main.o libmumbot.a
-        $(CXX) $(CXXFLAGS) main.o libmumbot.a $(LDFLAGS) -o bot
+	$(CXX) $(CXXFLAGS) main.o libmumbot.a $(LDFLAGS) -o bot

@@ -8,7 +8,6 @@
 
 #include <grpc++/impl/codegen/async_stream.h>
 #include <grpc++/impl/codegen/async_unary_call.h>
-#include <grpc++/impl/codegen/method_handler_impl.h>
 #include <grpc++/impl/codegen/proto_utils.h>
 #include <grpc++/impl/codegen/rpc_method.h>
 #include <grpc++/impl/codegen/service_type.h>
@@ -152,27 +151,6 @@ class MumBotRPC GRPC_FINAL {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
-  template <class BaseClass>
-  class WithStreamedUnaryMethod_Say : public BaseClass {
-   private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
-   public:
-    WithStreamedUnaryMethod_Say() {
-      ::grpc::Service::MarkMethodStreamedUnary(0,
-        new ::grpc::StreamedUnaryHandler< ::MumBotProto::TextMessage, ::MumBotProto::TextMessageResponse>(std::bind(&WithStreamedUnaryMethod_Say<BaseClass>::StreamedSay, this, std::placeholders::_1, std::placeholders::_2)));
-    }
-    ~WithStreamedUnaryMethod_Say() GRPC_OVERRIDE {
-      BaseClassMustBeDerivedFromService(this);
-    }
-    // disable regular version of this method
-    ::grpc::Status Say(::grpc::ServerContext* context, const ::MumBotProto::TextMessage* request, ::MumBotProto::TextMessageResponse* response) GRPC_FINAL GRPC_OVERRIDE {
-      abort();
-      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-    }
-    // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedSay(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::MumBotProto::TextMessage,::MumBotProto::TextMessageResponse>* server_unary_streamer) = 0;
-  };
-  typedef WithStreamedUnaryMethod_Say<Service > StreamedUnaryService;
 };
 
 }  // namespace MumBotProto

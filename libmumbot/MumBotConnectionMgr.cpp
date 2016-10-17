@@ -116,6 +116,15 @@ namespace libmumbot {
 				if (eventListener_ != NULL) eventListener_->recvVersion(version);
 	            break;
 	          }
+				case PKT_TYPE_USERREMOVE: {
+					MumbleProto::UserRemove rem;
+					rem.ParseFromString(packet);
+					MumbleProto::UserState msg;
+					msg.set_session(rem.session());
+					if (mumState_ != NULL) mumState_->updateUserState(msg, true);
+					if (eventListener_ != NULL) eventListener_->recvUserRemove(rem);
+					break;
+				}
 			  case PKT_TYPE_USERSTATE: {
 				MumbleProto::UserState msg;
   	            msg.ParseFromString(packet);
@@ -139,8 +148,8 @@ namespace libmumbot {
 				  std::cout << "Recv message" << "\n";
 				  MumbleProto::TextMessage txt;
 				  txt.ParseFromString(packet);
-                  
-     
+
+
                   MumBotProto::TextMessage mbtxt;
                   mbtxt.set_msg(txt.message());
                   try {
@@ -150,7 +159,7 @@ namespace libmumbot {
                       //just in case the user logged out and no longer have the id->name map
                   }
 				  RPCWorkQueueMgr_.pushNextTextMessage(mbtxt);
-                  
+
 				  std::cout << "Recv message 2" << "\n";
 				  if (eventListener_ != NULL) eventListener_->recvTextMessage(txt);
 				  break;
@@ -247,11 +256,12 @@ namespace libmumbot {
 	grpc::Status MumBotConnectionMgr::Say(::grpc::ServerContext* context, const MumBotProto::TextMessage* request, MumBotProto::TextMessageResponse* response) {
 		std::cout << "Say was called\n";
         MumbleProto::TextMessage mtxt;
-        
+
         int tncount = request->toname_size();
         for (int i = 0; i < tncount;i++) {
             try {
                 uint32_t toUserSession = mumState_->userNameToSession(request->toname(i));
+                std::cout << "User session:" << toUserSession << "\n";
                 mtxt.add_session(toUserSession);
             }
             catch (std::exception &e) {
@@ -259,8 +269,8 @@ namespace libmumbot {
                 return grpc::Status::OK;
             }
         }
-        
-		
+
+
 		mtxt.set_message(request->msg());
 		MumbleProto::UserState state = mumState_->getUserState(myMumbleSessionId_);
 		if (tncount == 0) mtxt.add_channel_id(state.channel_id()); //send to my channel
@@ -331,5 +341,3 @@ namespace libmumbot {
 	}
 
 }
-
-

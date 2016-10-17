@@ -20,7 +20,7 @@ def say(msg, toName = ""):
     pmsg = proto.MumBot_pb2.TextMessage(msg=msg)
     if toName != "":
         pmsg.toName.append(toName)
-    
+
     response = stub.Say(pmsg)
 
 
@@ -57,7 +57,7 @@ for res in response:
                         cmdtoexecute = mpc_command + " -w play"
                         os.system(cmdtoexecute)
             else:
-                m = re.search('^\d*$',param) #queue a local song
+                m = re.search('^(\d)*$',param) #queue a local song
                 if m:
                     index = int(param)
                     if len(lastFileList_[fromName]) > 0 and index <= len(lastFileList_[fromName]) - 1:
@@ -69,10 +69,10 @@ for res in response:
                         if (cmdoutput == ""):
                             cmdtoexecute = mpc_command + " -w play"
                             os.system(cmdtoexecute)
-                        
-                
+
+
         elif command == '!vol':
-            m = re.search('^\d*$',param)
+            m = re.search('^(\d)*$',param)
             if m:
                 vol = int(param)
                 if (vol >= 0 and vol <= 100):
@@ -91,7 +91,7 @@ for res in response:
             say("!skip - this song sucks")
 
         elif command == '!list':
-            
+
             files = glob.glob(mpd_music_path + '*')
             files.sort(key=os.path.getmtime)
             cFileList = []
@@ -110,8 +110,3 @@ for res in response:
                         count = count + 1
 
             lastFileList_[fromName] = cFileList
-
-
-
-
-
